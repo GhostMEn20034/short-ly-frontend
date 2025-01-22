@@ -1,0 +1,75 @@
+import * as React from 'react';
+import {useTheme} from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Drawer from "@mui/material/Drawer";
+import CssBaseline from '@mui/material/CssBaseline';
+import DefaultAppBar from '@app-helper-components/home/AppBar/DefaultAppBar.tsx';
+import MobileAppBar from "@app-helper-components/home/AppBar/MobileAppBar.tsx";
+import DefaultDrawer from '@app-helper-components/home/SideBar/DefaultDrawer.tsx';
+import DrawerHeader from "@app-helper-components/home/SideBar/DrawerHeader.tsx";
+import {Outlet} from 'react-router';
+import AppBarContent from "@app-components/common/dashboard/AppBarContent.tsx";
+import DrawerContent from "@app-components/common/dashboard/DrawerContent.tsx";
+import {useMediaQuery} from "@mui/material";
+import {drawerWidth} from "@app-consts/componentSizes.ts";
+
+
+export default function NavigationBar() {
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    return (
+        <Box sx={{display: 'flex'}}>
+            <CssBaseline/>
+            {!isMobile ? (
+                <>
+                    <DefaultAppBar position="fixed" open={open}>
+                        <AppBarContent open={open} handleDrawerOpen={handleDrawerOpen}/>
+                    </DefaultAppBar>
+                    <DefaultDrawer variant="permanent" open={open}>
+                        <DrawerContent open={open} theme={theme} handleDrawerClose={handleDrawerClose}/>
+                    </DefaultDrawer>
+                </>
+            ) : (
+                <>
+                    <MobileAppBar position="fixed"
+                            sx={{
+                                width: {sm: `calc(100% - ${drawerWidth}px)`},
+                                ml: {sm: `${drawerWidth}px`},
+                            }}
+                    >
+                        <AppBarContent open={open} handleDrawerOpen={handleDrawerOpen}/>
+                    </MobileAppBar>
+                    <Drawer
+                        variant="temporary"
+                        open={open}
+                        onClose={handleDrawerClose}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                    >
+                        <DrawerContent open={open} theme={theme} handleDrawerClose={handleDrawerClose}/>
+                    </Drawer>
+                </>
+            )}
+            <Box component="main" sx={{flexGrow: 1, p: 3}}>
+                <DrawerHeader/>
+                <Outlet/>
+            </Box>
+        </Box>
+    );
+}
