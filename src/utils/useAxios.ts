@@ -28,16 +28,16 @@ const useAxios = (baseURL: string): AxiosInstance => {
         }
 
         try {
-            const response: AxiosResponse = await axios.post(`${baseURL}/api/auth/token/refresh/`, {
-                refresh: authTokens?.refresh_token,
+            const response: AxiosResponse = await axios.post(`${baseURL}/api/v1/auth/token/refresh/`, {
+                refresh_token: authTokens?.refresh_token,
             });
 
             localStorage.setItem('authTokens', JSON.stringify(response.data))
 
             setAuthTokens(response.data);
-            setUser(jwtDecode(response.data.access));
+            setUser(jwtDecode(response.data.access_token));
 
-            req.headers!.Authorization = `Bearer ${response.data.access}`;
+            req.headers!.Authorization = `Bearer ${response.data.access_token}`;
             return req;
         } catch (error: unknown) {
             const err = error as AxiosError;

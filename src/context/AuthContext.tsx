@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         try {
             const response = await axios.post(
-                `${apiBaseUrl}/api/v1/auth/token/`,
+                `${apiBaseUrl}/api/v1/auth/token`,
                 {username: email, password: password},
                 {
                     headers: {

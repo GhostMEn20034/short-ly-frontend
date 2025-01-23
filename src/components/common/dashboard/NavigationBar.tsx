@@ -12,13 +12,17 @@ import AppBarContent from "@app-components/common/dashboard/AppBarContent.tsx";
 import DrawerContent from "@app-components/common/dashboard/DrawerContent.tsx";
 import {useMediaQuery} from "@mui/material";
 import {drawerWidth} from "@app-consts/componentSizes.ts";
+import {useContext} from "react";
+import UserProvider, {UserContextType} from "@app-context/UserContext.tsx";
 
 
-export default function NavigationBar() {
+export default function NavigationBar({ pathname }: { pathname: string }) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const { userInfo } = useContext(UserProvider) as UserContextType;
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -34,10 +38,20 @@ export default function NavigationBar() {
             {!isMobile ? (
                 <>
                     <DefaultAppBar position="fixed" open={open}>
-                        <AppBarContent open={open} handleDrawerOpen={handleDrawerOpen}/>
+                        <AppBarContent
+                            open={open}
+                            handleDrawerOpen={handleDrawerOpen}
+                            user={userInfo}
+                        />
                     </DefaultAppBar>
                     <DefaultDrawer variant="permanent" open={open}>
-                        <DrawerContent open={open} theme={theme} handleDrawerClose={handleDrawerClose}/>
+                        <DrawerContent
+                            open={open}
+                            theme={theme}
+                            handleDrawerClose={handleDrawerClose}
+                            pathname={pathname}
+                            user={userInfo}
+                        />
                     </DefaultDrawer>
                 </>
             ) : (
@@ -48,7 +62,11 @@ export default function NavigationBar() {
                                 ml: {sm: `${drawerWidth}px`},
                             }}
                     >
-                        <AppBarContent open={open} handleDrawerOpen={handleDrawerOpen}/>
+                        <AppBarContent
+                            open={open}
+                            handleDrawerOpen={handleDrawerOpen}
+                            user={userInfo}
+                        />
                     </MobileAppBar>
                     <Drawer
                         variant="temporary"
@@ -62,7 +80,13 @@ export default function NavigationBar() {
                             '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                         }}
                     >
-                        <DrawerContent open={open} theme={theme} handleDrawerClose={handleDrawerClose}/>
+                        <DrawerContent
+                            open={open}
+                            theme={theme}
+                            handleDrawerClose={handleDrawerClose}
+                            pathname={pathname}
+                            user={userInfo}
+                        />
                     </Drawer>
                 </>
             )}

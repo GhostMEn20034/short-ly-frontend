@@ -6,3 +6,15 @@ export interface DrawerItem {
     path: string,
     iconName: React.ElementType<SvgIconProps>,
 }
+
+export interface ActionMenuItem {
+    name: string,
+    path: string,
+    iconName: React.ElementType<SvgIconProps>,
+}
+
+export interface HomePageShortcut {
+    text: string,
+    buttonText: string,
+    path: string,
+}

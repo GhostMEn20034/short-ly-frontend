@@ -7,8 +7,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import ListItemText from "@mui/material/ListItemText";
 import {Theme} from "@mui/material/styles";
 import {DrawerItem} from "@app-types/dashboard.ts";
@@ -16,9 +14,15 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from 'react-router';
 import {blueGrey} from "@mui/material/colors";
+import MenuWithActions from "@app-components/common/dashboard/MenuWithActions.tsx";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {greetBasedOnTime} from "@app-utils/time.ts";
+import {User} from "@app-types/user.ts";
 
 
 const drawerItems: DrawerItem[] = [
@@ -28,28 +32,50 @@ const drawerItems: DrawerItem[] = [
     {name: "Analytics", path: "/analytics", iconName: BarChartOutlinedIcon},
 ];
 
+const additionalDrawerItems: DrawerItem[] = [
+    {name: "Settings", path: "/settings/profile", iconName: SettingsOutlinedIcon},
+]
+
 interface DrawerContentProps {
     open: boolean,
-    theme: Theme;
-    handleDrawerClose: () => void;
+    theme: Theme,
+    handleDrawerClose: () => void,
+    pathname: string,
+    user: User | null,
 }
 
-export default function DrawerContent({open, theme, handleDrawerClose}: DrawerContentProps) {
+export default function DrawerContent({open, theme, handleDrawerClose, pathname, user}: DrawerContentProps) {
     return (
         <>
             <DrawerHeader>
+                <Box sx={{ mr: "auto" }}>
+                    <Typography variant="body1">
+                        {greetBasedOnTime()},
+                    </Typography>
+                    <Typography variant="body1">
+                        {user?.firstName}
+                    </Typography>
+                </Box>
                 <IconButton onClick={handleDrawerClose}>
                     {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                 </IconButton>
             </DrawerHeader>
             <Divider/>
+            <Box display="flex" justifyContent="center" alignSelf="center" sx={{ mt: 1, width: "100%" }}>
+                <MenuWithActions renderIconButton={!open} />
+            </Box>
             <List>
                 {drawerItems.map(({name, path, iconName: IconComponent}) => (
-
                     <Link key={name} component={RouterLink} to={path} underline="none" sx={{
                         color: 'inherit', // Keeps text color consistent with the theme
                     }}>
-                        <ListItem disablePadding sx={{display: 'block'}}>
+                        <ListItem
+                            disablePadding
+                            sx={{
+                                display: 'block',
+                                backgroundColor: pathname.startsWith(path) ? '#f9e8e8;' : 'inherit',
+                            }}
+                        >
                             <ListItemButton
                                 sx={[
                                     {
@@ -107,54 +133,71 @@ export default function DrawerContent({open, theme, handleDrawerClose}: DrawerCo
             </List>
             <Divider/>
             <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding sx={{display: 'block'}}>
-                        <ListItemButton
-                            sx={[
-                                {
-                                    minHeight: 48,
-                                    px: 2.5,
-                                },
-                                open
-                                    ? {
-                                        justifyContent: 'initial',
-                                    }
-                                    : {
-                                        justifyContent: 'center',
-                                    },
-                            ]}
+                {additionalDrawerItems.map(({name, path, iconName: IconComponent}) => (
+
+                    <Link key={name} component={RouterLink} to={path} underline="none" sx={{
+                        color: 'inherit', // Keeps text color consistent with the theme
+                    }}>
+                        <ListItem
+                            disablePadding
+                            sx={{
+                                display: 'block',
+                                backgroundColor: pathname.startsWith(path) ? '#f9e8e8;' : 'inherit',
+                            }}
                         >
-                            <ListItemIcon
+                            <ListItemButton
                                 sx={[
                                     {
-                                        minWidth: 0,
-                                        justifyContent: 'center',
+                                        minHeight: 48,
+                                        px: 2.5,
                                     },
                                     open
                                         ? {
-                                            mr: 3,
+                                            justifyContent: 'initial',
                                         }
                                         : {
-                                            mr: 'auto',
+                                            justifyContent: 'center',
                                         },
                                 ]}
                             >
-                                {index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={text}
-                                sx={[
-                                    open
-                                        ? {
-                                            opacity: 1,
-                                        }
-                                        : {
-                                            opacity: 0,
+                                <ListItemIcon
+                                    sx={[
+                                        {
+                                            minWidth: 0,
+                                            justifyContent: 'center',
                                         },
-                                ]}
-                            />
-                        </ListItemButton>
-                    </ListItem>
+                                        open
+                                            ? {
+                                                mr: 3,
+                                            }
+                                            : {
+                                                mr: 'auto',
+                                            },
+                                    ]}
+                                >
+                                    <IconComponent sx={{ color: blueGrey[800]}} />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={name}
+                                    slotProps={{
+                                        primary: {
+                                            fontWeight: 550,
+                                            color: blueGrey[800],
+                                        }
+                                    }}
+                                    sx={[
+                                        open
+                                            ? {
+                                                opacity: 1,
+                                            }
+                                            : {
+                                                opacity: 0,
+                                            },
+                                    ]}
+                                />
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
         </>
