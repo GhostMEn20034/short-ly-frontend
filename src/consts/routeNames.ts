@@ -1,5 +1,5 @@
 export const routeNameKeys = [
-    "signIn", "signUp", "home",
+    "signIn", "signUp", "home", "profile",
 ] as const;
 
 type routeNameKey = typeof routeNameKeys[number];
@@ -10,6 +10,9 @@ const routeNames: Record<routeNameKey, string> = {
     signUp: "sign_up",
     // Home
     home: "home",
+    // settings
+    profile: "profile",
+
 };
 
 export default routeNames;

@@ -23,17 +23,19 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {greetBasedOnTime} from "@app-utils/time.ts";
 import {User} from "@app-types/user.ts";
+import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import routeNames from "@app-consts/routeNames.ts";
 
 
 const drawerItems: DrawerItem[] = [
     {name: "Home", path: "/home", iconName: HomeOutlinedIcon},
-    {name: "Links", path: "/links", iconName: InsertLinkOutlinedIcon},
-    {name: "QR Codes", path: "/qrcodes", iconName: QrCode2OutlinedIcon},
-    {name: "Analytics", path: "/analytics", iconName: BarChartOutlinedIcon},
+    {name: "Links", path: `/${rootRoutePrefixes.links}`, iconName: InsertLinkOutlinedIcon},
+    {name: "QR Codes", path: `/${rootRoutePrefixes.QRCodes}`, iconName: QrCode2OutlinedIcon},
+    {name: "Analytics", path: `/${rootRoutePrefixes.analytics}`, iconName: BarChartOutlinedIcon},
 ];
 
 const additionalDrawerItems: DrawerItem[] = [
-    {name: "Settings", path: "/settings/profile", iconName: SettingsOutlinedIcon},
+    {name: "Settings", path: `/${rootRoutePrefixes.settings}/${routeNames.profile}`, iconName: SettingsOutlinedIcon},
 ]
 
 interface DrawerContentProps {
@@ -50,10 +52,10 @@ export default function DrawerContent({open, theme, handleDrawerClose, pathname,
             <DrawerHeader>
                 <Box sx={{ mr: "auto" }}>
                     <Typography variant="body1">
-                        {greetBasedOnTime()},
+                        <b>{greetBasedOnTime()}</b>,
                     </Typography>
                     <Typography variant="body1">
-                        {user?.firstName}
+                        <b>{user?.firstName}</b>
                     </Typography>
                 </Box>
                 <IconButton onClick={handleDrawerClose}>
@@ -64,6 +66,7 @@ export default function DrawerContent({open, theme, handleDrawerClose, pathname,
             <Box display="flex" justifyContent="center" alignSelf="center" sx={{ mt: 1, width: "100%" }}>
                 <MenuWithActions renderIconButton={!open} />
             </Box>
+            <Divider/>
             <List>
                 {drawerItems.map(({name, path, iconName: IconComponent}) => (
                     <Link key={name} component={RouterLink} to={path} underline="none" sx={{

@@ -12,7 +12,7 @@ interface AuthTokens {
 export interface AuthContextType {
     user: string | null;
     loginUser: (email: string, password: string, additionalData?: Record<string, string>) => Promise<void>;
-    logoutUser: () => void;
+    logoutUser: (nextDestination?: string) => void;
     authTokens: AuthTokens | null;
     setAuthTokens: React.Dispatch<React.SetStateAction<AuthTokens | null>>;
     setUser: React.Dispatch<React.SetStateAction<string | null>>;
@@ -76,12 +76,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const logoutUser = () => {
+    const logoutUser = (nextDestination: string = "/") => {
         try {
             setAuthTokens(null);
             setUser(null);
             localStorage.removeItem('authTokens');
-            window.location.assign("/");
+            window.location.assign(nextDestination);
         } catch {
             console.log("Unable to logout");
         }

@@ -4,18 +4,19 @@ import {Paper} from "@mui/material";
 import DefaultOutlinedButton from "@app-components/common/buttons/DefaultOutlinedButton.tsx";
 import {HomePageShortcut} from "@app-types/dashboard.ts";
 import {Link as RouterLink} from "react-router";
+import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 
 const shortcuts: HomePageShortcut[] = [
-    {text: "Make it short", buttonText: "Go to links", path: "/links"},
-    {text: "Make it scannable", buttonText: "Go to QR Codes", path: "/qrcodes"},
-    {text: "Analyze it", buttonText: "Go to Analytics", path: "/analytics"},
+    {text: "Make it short", buttonText: "Go to links", path: `/${rootRoutePrefixes.links}`},
+    {text: "Make it scannable", buttonText: "Go to QR Codes", path: `/${rootRoutePrefixes.QRCodes}`},
+    {text: "Analyze it", buttonText: "Go to Analytics", path: `/${rootRoutePrefixes.analytics}`},
 ];
 
 export default function Home() {
     return (
         <Box>
             <Typography variant="h4">
-                <b>Your Links Platform</b>
+                <b>Your Linking Platform</b>
             </Typography>
             <Box sx={{ mt: 2 }}>
                 <Paper sx={{display: "flex", justifyContent: "space-around", alignContent:"space-around", padding: 2, flexWrap: "wrap"}}>

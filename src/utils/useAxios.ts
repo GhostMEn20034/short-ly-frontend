@@ -28,7 +28,7 @@ const useAxios = (baseURL: string): AxiosInstance => {
         }
 
         try {
-            const response: AxiosResponse = await axios.post(`${baseURL}/api/v1/auth/token/refresh/`, {
+            const response: AxiosResponse = await axios.post(`${baseURL}/api/v1/auth/token/refresh`, {
                 refresh_token: authTokens?.refresh_token,
             });
 
@@ -52,8 +52,6 @@ const useAxios = (baseURL: string): AxiosInstance => {
             }
         }
     });
-
-
     // response interceptor
     return axiosInstance;
 }

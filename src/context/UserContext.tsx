@@ -23,6 +23,7 @@ export function UserProvider({ api, children }: { api: AxiosInstance, children: 
 
     const updateUserInfo = (newData: User | null) => {
         // Use the spread operator to merge the new data with the existing user info
+        console.log(newData);
         if (newData !== null) {
             setUserInfo({ ...userInfo, ...newData });
         } else {

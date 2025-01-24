@@ -3,14 +3,13 @@ import Box from "@mui/material/Box";
 import SignIn from "@app-components/auth/SignIn.tsx";
 import AuthContext, {AuthContextType} from "@app-context/AuthContext.tsx";
 import {useEffect} from "react";
-import {AxiosInstance} from "axios";
 import {useLocation} from "react-router-dom";
 import {Alert} from "@mui/material";
 import routeNames from "@app-consts/routeNames.ts";
 
 
 
-export default function SignInPage({api}: {api: AxiosInstance}) {
+export default function SignInPage() {
     const { error, setError, loginUser } = React.useContext(AuthContext) as AuthContextType;
 
     const {state} = useLocation()
@@ -38,8 +37,6 @@ export default function SignInPage({api}: {api: AxiosInstance}) {
     useEffect(() => {
         document.title = "Log In to the Shortly";
     }, []);
-
-    console.log(api);
 
     return (
         <Box className="MainBox" sx={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>

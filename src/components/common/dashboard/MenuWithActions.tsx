@@ -14,11 +14,12 @@ import {Link as RouterLink} from "react-router";
 import Link from "@mui/material/Link";
 import ListItemText from "@mui/material/ListItemText";
 import {blueGrey} from "@mui/material/colors";
+import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 
 
 const actionMenuItems: ActionMenuItem[] = [
-    {name: "Link", path: "/links/create", iconName: InsertLinkOutlinedIcon},
-    {name: "QR Code", path: "/qrcodes/create", iconName: QrCode2OutlinedIcon},
+    {name: "Link", path: `/${rootRoutePrefixes.links}/create`, iconName: InsertLinkOutlinedIcon},
+    {name: "QR Code", path: `/${rootRoutePrefixes.QRCodes}/create`, iconName: QrCode2OutlinedIcon},
 ];
 
 

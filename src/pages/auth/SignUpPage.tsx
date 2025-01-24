@@ -3,7 +3,7 @@ import SignUp from "@app-components/auth/SignUp";
 import { parseErrors } from "@app-utils/errorParsers";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import axios, {AxiosInstance} from "axios";
+import axios from "axios";
 import * as React from "react";
 import {apiBaseUrl} from "@app-settings";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes";
@@ -11,7 +11,7 @@ import routeNames from "@app-consts/routeNames.ts";
 import {Alert} from "@mui/material";
 
 
-export default function SignUpPage({api}: {api: AxiosInstance}) {
+export default function SignUpPage() {
     const [formErrors, setFormErrors] = React.useState<Record<string, string[]>>({});
 
     const navigate = useNavigate();
@@ -42,7 +42,6 @@ export default function SignUpPage({api}: {api: AxiosInstance}) {
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.log(error.response!.data);
                 if (error.response!.status >= 400 && error.response!.status < 500) {
                     setFormErrors(parseErrors(error.response!.data.detail));
                 } else {
@@ -57,8 +56,6 @@ export default function SignUpPage({api}: {api: AxiosInstance}) {
     useEffect(() => {
         document.title = "Sign Up for the Shortly"; // Set the page title
     }, []); // Empty dependency array to run only once
-
-    console.log(api);
 
     console.log(formErrors)
 
