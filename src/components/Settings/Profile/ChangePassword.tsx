@@ -109,7 +109,6 @@ export default function ChangePassword({changePassword}: ChangePasswordProps) {
             </FormControl>
             <DefaultButton
                 onClick={handleSubmit}
-                size="small"
                 variant="contained"
                 sx={{
                     maxWidth: 175

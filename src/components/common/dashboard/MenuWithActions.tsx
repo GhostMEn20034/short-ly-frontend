@@ -55,7 +55,6 @@ export default function MenuWithActions({renderIconButton}: { renderIconButton: 
                     <DefaultButton
                         variant="contained"
                         onClick={handleClick}
-                        size="small"
                         aria-controls={open ? 'account-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}

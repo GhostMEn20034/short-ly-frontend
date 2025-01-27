@@ -10,6 +10,7 @@ import routeNames from "@app-consts/routeNames.ts";
 import PrivateRoute from "@app-components/common/react-router/PrivateRoute.tsx";
 
 import {UserProvider} from "@app-context/UserContext.tsx";
+import LinkRoutes from "./routes/LinkRoutes.tsx";
 
 function App() {
 
@@ -30,6 +31,10 @@ function App() {
                         <Route path={`/${rootRoutePrefixes.settings}/*`} element={
                             <SettingsRoutes api={api} />
                         } />
+
+                        <Route path={`/${rootRoutePrefixes.links}/*`} element={
+                            <LinkRoutes api={api} />
+                        }/>
                     </Route>
                 </Routes>
             </UserProvider>

@@ -101,5 +101,5 @@ export default function AppBarMenu({open, anchorEl, handleClose, user, logout}: 
                 Logout
             </MenuItem>
         </Menu>
-    )
+    );
 }

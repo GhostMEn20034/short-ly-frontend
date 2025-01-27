@@ -51,10 +51,10 @@ export default function DrawerContent({open, theme, handleDrawerClose, pathname,
         <>
             <DrawerHeader>
                 <Box sx={{ mr: "auto" }}>
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={{ color: blueGrey[800]}}>
                         <b>{greetBasedOnTime()}</b>,
                     </Typography>
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={{ color: blueGrey[800]}}>
                         <b>{user?.firstName}</b>
                     </Typography>
                 </Box>
@@ -63,7 +63,7 @@ export default function DrawerContent({open, theme, handleDrawerClose, pathname,
                 </IconButton>
             </DrawerHeader>
             <Divider/>
-            <Box display="flex" justifyContent="center" alignSelf="center" sx={{ mt: 1, width: "100%" }}>
+            <Box display="flex" justifyContent="center" alignSelf="center" sx={{ mt: 1, mb: 1, width: "100%" }}>
                 <MenuWithActions renderIconButton={!open} />
             </Box>
             <Divider/>

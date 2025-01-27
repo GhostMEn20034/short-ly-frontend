@@ -81,7 +81,6 @@ export default function ChangeFullName({user, updateFullName}: ChangeFullNamePro
             </FormControl>
             <DefaultButton
                 onClick={handleSubmit}
-                size="small"
                 disabled={firstName === null && lastName === null}
                 variant="contained"
                 sx={{

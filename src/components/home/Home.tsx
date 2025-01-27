@@ -5,6 +5,7 @@ import DefaultOutlinedButton from "@app-components/common/buttons/DefaultOutline
 import {HomePageShortcut} from "@app-types/dashboard.ts";
 import {Link as RouterLink} from "react-router";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import {blueGrey} from "@mui/material/colors";
 
 const shortcuts: HomePageShortcut[] = [
     {text: "Make it short", buttonText: "Go to links", path: `/${rootRoutePrefixes.links}`},
@@ -15,7 +16,7 @@ const shortcuts: HomePageShortcut[] = [
 export default function Home() {
     return (
         <Box>
-            <Typography variant="h4">
+            <Typography variant="h4" sx={{ color: blueGrey[800]}}>
                 <b>Your Linking Platform</b>
             </Typography>
             <Box sx={{ mt: 2 }}>
@@ -34,7 +35,7 @@ export default function Home() {
                                 mt: 2,
                             }}
                         >
-                            <Typography variant="h6" textAlign="center">
+                            <Typography variant="h6" textAlign="center" sx={{ color: blueGrey[800]}}>
                                 <b>{text}</b>
                             </Typography>
                             <DefaultOutlinedButton

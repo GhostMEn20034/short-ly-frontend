@@ -56,7 +56,6 @@ export default function ChangeEmail({user, updateEmail}: ChangeEmailProps) {
             </FormControl>
             <DefaultButton
                 onClick={handleSubmit}
-                size="small"
                 variant="contained"
                 sx={{
                     maxWidth: 175

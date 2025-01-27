@@ -1,0 +1,17 @@
+import {Dayjs} from "dayjs";
+
+export interface LinkItem {
+    friendlyName: string | null;
+    isShortCodeCustom: boolean | null;
+    shortCode: string | null;
+    longUrl: string | null;
+    createdAt: Dayjs;
+}
+
+export interface LinkItemInResponseBody {
+    friendly_name: string;
+    is_short_code_custom: boolean;
+    short_code: string;
+    long_url: string;
+    created_at: Dayjs;
+}
