@@ -42,7 +42,7 @@ const DefaultButton = styled(Button)<ButtonProps | AdditionalProps>(({ theme }) 
     '&:focus': {
         boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
     },
-    // Handle different sizes dynamically
+    // Handles different sizes
     '&.MuiButton-sizeSmall': {
         fontSize: theme.typography.pxToRem(13),
         padding: '4px 10px',
@@ -55,6 +55,7 @@ const DefaultButton = styled(Button)<ButtonProps | AdditionalProps>(({ theme }) 
         fontSize: theme.typography.pxToRem(18),
         padding: '8px 16px',
     },
+    // Secondary color
     '&.MuiButton-colorSecondary': {
         backgroundColor: 'white',
         borderColor: '#e0e0e0',
@@ -72,6 +73,25 @@ const DefaultButton = styled(Button)<ButtonProps | AdditionalProps>(({ theme }) 
         },
         '&:focus': {
             boxShadow: '0 0 0 0.2rem rgba(0,123,255,.3)',
+        },
+    },
+    // Button with variant="text"
+    '&.MuiButton-text': {
+        backgroundColor: 'transparent',
+        color: theme.palette.primary.main, // Use theme's primary color
+        border: 'none',
+        boxShadow: 'none',
+        padding: '6px 12px',
+        '&:hover': {
+            backgroundColor: "rgba(33, 150, 243, 0.04)", // Use a lighter shade of primary color
+            color: theme.palette.primary.main,
+        },
+        '&:active': {
+            backgroundColor: "rgba(33, 150, 243, 0.04)", // Use a darker shade of primary color
+            color: theme.palette.primary.main,
+        },
+        '&:focus': {
+            boxShadow: `0 0 0 0.2rem ${theme.palette.primary.light}`, // Subtle focus ring
         },
     },
 }));

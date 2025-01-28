@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import {User} from "@app-types/user.ts";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 import React, {useState} from "react";
+import {blueGrey} from "@mui/material/colors";
 
 interface ChangeEmailProps {
     user: User | null;
@@ -29,7 +30,7 @@ export default function ChangeEmail({user, updateEmail}: ChangeEmailProps) {
             gap: 2,
         }}>
             <FormControl>
-                <FormLabel><b>Email</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>Email</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.email)}
                     helperText={formErrors?.email}
@@ -45,9 +46,7 @@ export default function ChangeEmail({user, updateEmail}: ChangeEmailProps) {
                     name="lastName"
                     size="small"
                     type="email"
-                    placeholder="Doe"
-                    id="password"
-                    autoComplete="current-password"
+                    placeholder="your@email.com"
                     required
                     fullWidth
                     variant="outlined"

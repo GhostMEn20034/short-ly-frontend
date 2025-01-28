@@ -1,9 +1,10 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import {LinkItem} from "@app-types/link.ts";
-import {Link as RouterLink, useSearchParams} from "react-router";
+import {Link as RouterLink, useSearchParams, useNavigate} from "react-router";
 import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import Timezone from "dayjs/plugin/timezone";
 import UTC from "dayjs/plugin/utc";
 import LinkListItem from "@app-components/link/list/ListItem.tsx";
 import Typography from "@mui/material/Typography";
@@ -13,17 +14,21 @@ import Divider from "@mui/material/Divider";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {blueGrey} from "@mui/material/colors";
 import {AxiosInstance} from "axios";
-import {convertResponse} from "@app-utils/link/convertResponse.ts";
+import {convertListOfLinksResponse} from "@app-utils/link/convertResponse.ts";
 import {changeQueryParams} from "@app-utils/urlParams/editUrlParams.ts";
 import DefaultPagination from "@app-components/common/pagination/DefaultPagination.tsx";
 import Link from "@mui/material/Link";
 
 
 dayjs.extend(LocalizedFormat);
+dayjs.extend(Timezone)
 dayjs.extend(UTC);
+
 
 export default function LinkListPage({api}: { api: AxiosInstance }) {
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const navigate = useNavigate();
 
     const page = Number(searchParams.get("page")) || 1;
 
@@ -31,6 +36,14 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
     const pageSize = 15;
 
     const [links, setLinks] = React.useState<LinkItem[] | null>(null);
+
+    const goToEditPage = (shortCode: string | null) => {
+        navigate(`/${rootRoutePrefixes.links}/${shortCode}/edit`);
+    };
+
+    const goToDetailsPage = (shortCode: string | null) => {
+        navigate(`/${rootRoutePrefixes.links}/${shortCode}/details`);
+    };
 
     const getLinkList = async () => {
         const params = {
@@ -41,12 +54,16 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
         try {
             const response = await api.get("/api/v1/urls/", {params});
             const data = await response.data;
-            setLinks(convertResponse(data.items));
+            setLinks(convertListOfLinksResponse(data.items));
             setPageCount(data.pagination.total_pages);
         } catch (error: unknown) {
             console.log(error);
         }
     };
+
+    React.useEffect(() => {
+        document.title ="Shortly | Links"
+    }, []);
 
     React.useEffect(() => {
         getLinkList();
@@ -85,7 +102,11 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                 <Box>
                     {links.map((link, index) => (
                         <Box key={link.shortCode} sx={{mb: index === links.length - 1 ? 0 : 2}}>
-                            <LinkListItem item={link}/>
+                            <LinkListItem
+                                item={link}
+                                goToEditPage={() => goToEditPage(link.shortCode)}
+                                goToDetailsPage={() => goToDetailsPage(link.shortCode)}
+                            />
                         </Box>
                     ))}
                 </Box>

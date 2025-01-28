@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 import {User} from "@app-types/user.ts";
 import React, {useState} from "react";
+import {blueGrey} from "@mui/material/colors";
 
 interface ChangeFullNameProps {
     user: User | null;
@@ -31,7 +32,7 @@ export default function ChangeFullName({user, updateFullName}: ChangeFullNamePro
             }}
         >
             <FormControl>
-                <FormLabel><b>First name</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>First name</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.first_name)}
                     helperText={formErrors?.first_name}
@@ -56,7 +57,7 @@ export default function ChangeFullName({user, updateFullName}: ChangeFullNamePro
                 />
             </FormControl>
             <FormControl>
-                <FormLabel><b>Last name</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>Last name</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.last_name)}
                     helperText={formErrors?.last_name}

@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import ChangeFullName from "@app-components/Settings/Profile/ChangeFullName.tsx";
-import {useContext, useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import UserProvider, {UserContextType} from "@app-context/UserContext.tsx";
 import ChangeEmail from "@app-components/Settings/Profile/ChangeEmail.tsx";
 import ChangePassword from "@app-components/Settings/Profile/ChangePassword.tsx";
@@ -12,6 +12,7 @@ import {ChangePasswordForm} from "@app-types/profile.ts";
 import AuthContext, {AuthContextType} from "@app-context/AuthContext.tsx";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import routeNames from "@app-consts/routeNames.ts";
+import {blueGrey} from "@mui/material/colors";
 
 export default function ProfilePage({api}: { api: AxiosInstance }) {
     const {userInfo, updateUserInfo} = useContext(UserProvider) as UserContextType;
@@ -100,6 +101,10 @@ export default function ProfilePage({api}: { api: AxiosInstance }) {
         }
     };
 
+    useEffect(() => {
+        document.title = "Shortly | Settings"
+    }, [])
+
     return (
         <Box>
 
@@ -118,7 +123,7 @@ export default function ProfilePage({api}: { api: AxiosInstance }) {
                 </Box>
             )}
             <Box mb={2}>
-                <Typography variant="h4">
+                <Typography variant="h4" sx={{ color: blueGrey[800] }}>
                     <b>Profile</b>
                 </Typography>
             </Box>
@@ -126,7 +131,7 @@ export default function ProfilePage({api}: { api: AxiosInstance }) {
                 <>
                     <Box>
                         <Box mb={1}>
-                            <Typography variant="h5">
+                            <Typography variant="h5" sx={{ color: blueGrey[800] }}>
                                 <b>Preferences</b>
                             </Typography>
                         </Box>
@@ -142,7 +147,7 @@ export default function ProfilePage({api}: { api: AxiosInstance }) {
                     </Box>
                     <Box mt={6}>
                         <Box mb={1}>
-                            <Typography variant="h5">
+                            <Typography variant="h5" sx={{ color: blueGrey[800] }}>
                                 <b>Security</b>
                             </Typography>
                         </Box>

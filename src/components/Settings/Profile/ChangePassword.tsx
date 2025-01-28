@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 import React, {useState} from "react";
 import {ChangePasswordForm} from "@app-types/profile.ts";
+import {blueGrey} from "@mui/material/colors";
 
 interface ChangePasswordProps {
     changePassword: (dataToUpdate: ChangePasswordForm) => Promise<Record<string, string[]> | null>
@@ -33,15 +34,15 @@ export default function ChangePassword({changePassword}: ChangePasswordProps) {
             gap: 2,
         }}>
             <Box>
-                <Typography variant="h6">
+                <Typography variant="h6" sx={{ color: blueGrey[800] }}>
                     <b>Change password</b>
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{ color: blueGrey[800] }}>
                     You will be required to login after changing your password
                 </Typography>
             </Box>
             <FormControl>
-                <FormLabel><b>Current password</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>Current password</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.old_password)}
                     helperText={formErrors?.old_password}
@@ -64,7 +65,7 @@ export default function ChangePassword({changePassword}: ChangePasswordProps) {
                 />
             </FormControl>
             <FormControl>
-                <FormLabel><b>New password</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>New password</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.new_password1)}
                     helperText={formErrors?.new_password1}
@@ -86,7 +87,7 @@ export default function ChangePassword({changePassword}: ChangePasswordProps) {
                 />
             </FormControl>
             <FormControl>
-                <FormLabel><b>Confirm new password</b></FormLabel>
+                <FormLabel sx={{ color: blueGrey[800] }}><b>Confirm new password</b></FormLabel>
                 <TextField
                     error={Boolean(formErrors?.new_password2)}
                     helperText={formErrors?.new_password2}

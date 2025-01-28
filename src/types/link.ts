@@ -1,4 +1,5 @@
 import {Dayjs} from "dayjs";
+import {StateField} from "@app-types/common.ts";
 
 export interface LinkItem {
     friendlyName: string | null;
@@ -14,4 +15,11 @@ export interface LinkItemInResponseBody {
     short_code: string;
     long_url: string;
     created_at: Dayjs;
+}
+
+export interface CreateLinkStates {
+    friendlyName: StateField<string | null>;
+    destination: StateField<string | null>;
+    useCustomShortCode: StateField<boolean>;
+    customShortCode: StateField<string | null>;
 }

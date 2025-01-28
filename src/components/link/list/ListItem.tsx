@@ -12,7 +12,13 @@ import {blueGrey} from "@mui/material/colors";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 
 
-export default function LinkListItem({item}: { item: LinkItem }) {
+interface LinkListItemProps {
+    item: LinkItem;
+    goToEditPage: () => void;
+    goToDetailsPage: () => void;
+}
+
+export default function LinkListItem({item, goToEditPage, goToDetailsPage}: LinkListItemProps) {
 
     return (
         <Box sx={{padding: 2, backgroundColor: "white", borderRadius: "8px"}}>
@@ -57,7 +63,7 @@ export default function LinkListItem({item}: { item: LinkItem }) {
                             {item.longUrl}
                         </Link>
                     </Box>
-                    <Box display="flex" gap={2}>
+                    <Box display="flex" gap={2} sx={{ color: blueGrey[800] }}>
                         <Box display="flex" alignItems="center" gap={0.5}>
                             <BarChartOutlinedIcon fontSize="small"/>
                             <Typography variant="body2">
@@ -75,6 +81,8 @@ export default function LinkListItem({item}: { item: LinkItem }) {
                 <Grid size={{xs: 12, md: 3}}>
                     <ListItemActions
                         shortLink={`${apiBaseUrl}/${item.shortCode}`}
+                        goToEditPage={goToEditPage}
+                        goToDetailsPage={goToDetailsPage}
                     />
                 </Grid>
             </Grid>

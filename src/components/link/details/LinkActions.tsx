@@ -6,20 +6,15 @@ import React from "react";
 import ActionMenu from "@app-components/common/menu/ActionMenu.tsx";
 import {ActionMenuItem} from "@app-types/menu.ts";
 import DeleteIcon from "@mui/icons-material/Delete";
-import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-import QrCodeOutlinedIcon from "@mui/icons-material/QrCodeOutlined";
 
 interface ListItemActionsProps {
     shortLink: string;
     goToEditPage: () => void;
-    goToDetailsPage: () => void;
 }
 
-export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPage }: ListItemActionsProps) {
+export default function LinkDetailsActions({ shortLink, goToEditPage }: ListItemActionsProps) {
     const menuItems: ActionMenuItem[] = [
         {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: () => {}},
-        {menuItemTitle: "View link details", iconName: InsertLinkOutlinedIcon, onClick: () => goToDetailsPage()},
-        {menuItemTitle: "View QR Code", iconName: QrCodeOutlinedIcon, onClick: () => goToDetailsPage()},
     ];
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

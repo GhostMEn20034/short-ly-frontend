@@ -1,33 +1,19 @@
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import DeleteIcon from '@mui/icons-material/Delete';
-import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
-import QrCodeOutlinedIcon from '@mui/icons-material/QrCodeOutlined';
-import * as React from "react";
-import {SvgIconProps} from "@mui/material";
 import blueGrey from "@mui/material/colors/blueGrey";
+import {ActionMenuItem} from "@app-types/menu.ts";
 
 
-interface LinkMenuItem {
-    menuItemTitle: string;
-    iconName: React.ElementType<SvgIconProps>;
-    onClick: () => void;
-}
 
-interface ListItemMenuProps {
+interface ActionMenuProps {
     open: boolean;
     anchorEl: HTMLElement | null;
     handleClose: () => void;
+    actionMenuItems: ActionMenuItem[];
 }
 
-const menuItems: LinkMenuItem[] = [
-    {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: () => "hello"},
-    {menuItemTitle: "View link details", iconName: InsertLinkOutlinedIcon, onClick: () => "hello"},
-    {menuItemTitle: "View QR Code", iconName: QrCodeOutlinedIcon, onClick: () => "hello"},
-];
-
-export default function ListItemMenu({open, anchorEl, handleClose}: ListItemMenuProps) {
+export default function ActionMenu({open, anchorEl, handleClose, actionMenuItems}: ActionMenuProps) {
     return (
         <Menu
             anchorEl={anchorEl}
@@ -48,7 +34,7 @@ export default function ListItemMenu({open, anchorEl, handleClose}: ListItemMenu
             transformOrigin={{horizontal: 'right', vertical: 'top'}}
             anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
         >
-            {menuItems.map(({menuItemTitle, onClick, iconName: IconComponent}) => (
+            {actionMenuItems.map(({menuItemTitle, onClick, iconName: IconComponent}) => (
                 <MenuItem key={menuItemTitle} onClick={onClick} sx={{ color: blueGrey[800] }}>
                     <ListItemIcon>
                         <IconComponent fontSize="small" sx={{ color: blueGrey[800] }} />
