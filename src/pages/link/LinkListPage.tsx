@@ -13,11 +13,12 @@ import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import Divider from "@mui/material/Divider";
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {blueGrey} from "@mui/material/colors";
-import {AxiosInstance} from "axios";
+import {AxiosInstance, isAxiosError} from "axios";
 import {convertListOfLinksResponse} from "@app-utils/link/convertResponse.ts";
 import {changeQueryParams} from "@app-utils/urlParams/editUrlParams.ts";
 import DefaultPagination from "@app-components/common/pagination/DefaultPagination.tsx";
 import Link from "@mui/material/Link";
+import DeleteLinkDialog from "@app-components/link/delete/DeleteLinkDialog.tsx";
 
 
 dayjs.extend(LocalizedFormat);
@@ -26,16 +27,30 @@ dayjs.extend(UTC);
 
 
 export default function LinkListPage({api}: { api: AxiosInstance }) {
-    const [searchParams, setSearchParams] = useSearchParams();
+    const deleteLinkDialogName = 'deleteLink';
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
 
     const page = Number(searchParams.get("page")) || 1;
-
-    const [pageCount, setPageCount] = React.useState(1);
     const pageSize = 15;
 
+    const [pageCount, setPageCount] = React.useState<number>(1);
+
     const [links, setLinks] = React.useState<LinkItem[] | null>(null);
+    const [itemToDelete, setItemToDelete] = React.useState<LinkItem | null>(null);
+    const [openedDialog, setOpenedDialog] = React.useState<string | null>(null);
+    const [deleteLinkErrorMessage, setDeleteLinkErrorMessage] = React.useState<string | null>(null);
+
+    const openDeleteLinkDialog = (item: LinkItem) => {
+        setItemToDelete(item);
+        setOpenedDialog(deleteLinkDialogName);
+    };
+
+    const closeDeleteLinkDialog = () => {
+        setOpenedDialog(null);
+        setItemToDelete(null); // Clear the selected item when closing the dialog
+    };
 
     const goToEditPage = (shortCode: string | null) => {
         navigate(`/${rootRoutePrefixes.links}/${shortCode}/edit`);
@@ -43,6 +58,28 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
 
     const goToDetailsPage = (shortCode: string | null) => {
         navigate(`/${rootRoutePrefixes.links}/${shortCode}/details`);
+    };
+
+    const deleteLink = async () => {
+        if (!itemToDelete) return;
+
+        try {
+            await api.delete(`/api/v1/urls/${itemToDelete.shortCode}`);
+            if (links && links.length > 1) {
+                setLinks(prevLinks =>
+                    prevLinks?.filter(item => item.shortCode !== itemToDelete.shortCode) ?? []
+                );
+            } else {
+                setSearchParams(changeQueryParams(searchParams, { page: 1 }));
+            }
+            closeDeleteLinkDialog();
+        } catch (error) {
+            if (isAxiosError(error) && error.response?.status === 404) {
+                setDeleteLinkErrorMessage("There's no link with such short code.")
+            } else {
+                setDeleteLinkErrorMessage("Something went wrong");
+            }
+        }
     };
 
     const getLinkList = async () => {
@@ -62,7 +99,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
     };
 
     React.useEffect(() => {
-        document.title ="Shortly | Links"
+        document.title = "Shortly | Links"
     }, []);
 
     React.useEffect(() => {
@@ -106,6 +143,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                                 item={link}
                                 goToEditPage={() => goToEditPage(link.shortCode)}
                                 goToDetailsPage={() => goToDetailsPage(link.shortCode)}
+                                openDeleteLinkDialog={openDeleteLinkDialog}
                             />
                         </Box>
                     ))}
@@ -141,6 +179,13 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                     />
                 </Box>
             )}
+            <DeleteLinkDialog
+                open={openedDialog === deleteLinkDialogName}
+                handleClose={closeDeleteLinkDialog}
+                deleteLinkErrorMessage={deleteLinkErrorMessage}
+                setDeleteLinkErrorMessage={setDeleteLinkErrorMessage}
+                handleSubmit={deleteLink}
+            />
         </Box>
     );
 };

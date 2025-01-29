@@ -13,11 +13,12 @@ interface ListItemActionsProps {
     shortLink: string;
     goToEditPage: () => void;
     goToDetailsPage: () => void;
+    openDeleteLinkDialog: () => void;
 }
 
-export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPage }: ListItemActionsProps) {
+export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPage, openDeleteLinkDialog }: ListItemActionsProps) {
     const menuItems: ActionMenuItem[] = [
-        {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: () => {}},
+        {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: openDeleteLinkDialog},
         {menuItemTitle: "View link details", iconName: InsertLinkOutlinedIcon, onClick: () => goToDetailsPage()},
         {menuItemTitle: "View QR Code", iconName: QrCodeOutlinedIcon, onClick: () => goToDetailsPage()},
     ];

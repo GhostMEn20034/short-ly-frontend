@@ -12,9 +12,10 @@ import LinkDetailsActions from "@app-components/link/details/LinkActions.tsx";
 interface LinkDetailsCardProps {
     item: LinkItem;
     goToEditPage: () => void;
+    openDeleteLinkDialog: () => void;
 }
 
-export default function LinkDetailsCard({item, goToEditPage}: LinkDetailsCardProps) {
+export default function LinkDetailsCard({item, goToEditPage, openDeleteLinkDialog}: LinkDetailsCardProps) {
     return (
         <Box sx={{padding: 3, backgroundColor: "white", borderRadius: "8px"}}>
             <Grid container spacing={1}>
@@ -65,6 +66,7 @@ export default function LinkDetailsCard({item, goToEditPage}: LinkDetailsCardPro
                     <LinkDetailsActions
                         shortLink={`${apiBaseUrl}/${item.shortCode}`}
                         goToEditPage={goToEditPage}
+                        openDeleteLinkDialog={openDeleteLinkDialog}
                     />
                 </Grid>
             </Grid>

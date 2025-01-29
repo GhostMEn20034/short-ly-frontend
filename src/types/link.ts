@@ -23,3 +23,8 @@ export interface CreateLinkStates {
     useCustomShortCode: StateField<boolean>;
     customShortCode: StateField<string | null>;
 }
+
+export interface EditLinkStates {
+    friendlyName: StateField<string | null>;
+    destination: StateField<string | null>;
+}

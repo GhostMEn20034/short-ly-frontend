@@ -1,20 +1,19 @@
 import Box from "@mui/material/Box";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
-import React from "react";
 import {blueGrey} from "@mui/material/colors";
+import {EditLinkStates} from "@app-types/link.ts";
+import React from "react";
 
 
 interface EditMandatoryFieldsProps {
-    longUrl: string | null;
-    setLongUrl: React.Dispatch<React.SetStateAction<string | null>>,
-    friendlyName: string | null;
-    setFriendlyName: React.Dispatch<React.SetStateAction<string | null>>,
-
+    states: EditLinkStates;
+    formErrors: Record<string, string[]> | null;
 }
 
 
-export default function EditLinkForm({longUrl, friendlyName}: EditMandatoryFieldsProps) {
+export default function EditLinkForm({states, formErrors}: EditMandatoryFieldsProps) {
+    const { friendlyName, destination } = states;
     return (
         <Box sx={{
             display: 'flex',
@@ -25,25 +24,41 @@ export default function EditLinkForm({longUrl, friendlyName}: EditMandatoryField
             <Box>
                 <FormLabel sx={{ color: blueGrey[800] }}><b>Title</b></FormLabel>
                 <TextField
-                    value={friendlyName ? friendlyName : ""}
+                    value={friendlyName.value ? friendlyName.value : ""}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const value = e.target.value;
+                        if (value.length < 1) {
+                            friendlyName.setState(null);
+                        } else {
+                            friendlyName.setState(value);
+                        }
+                    }}
                     fullWidth
                     size="small"
                     variant="outlined"
-                    // error={formErrors?.email !== undefined}
-                    // helperText={formErrors?.email}
-                    // color={formErrors?.email !== undefined ? 'error' : 'primary'}
+                    error={formErrors?.friendly_name !== undefined}
+                    helperText={formErrors?.friendly_name}
+                    color={formErrors?.friendly_name !== undefined ? 'error' : 'primary'}
                 />
             </Box>
             <Box>
                 <FormLabel sx={{ color: blueGrey[800] }}><b>Destination URL</b></FormLabel>
                 <TextField
-                    value={longUrl ? longUrl : ""}
+                    value={destination.value ? destination.value : ""}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const value = e.target.value;
+                        if (value.length < 1) {
+                            destination.setState(null);
+                        } else {
+                            destination.setState(value);
+                        }
+                    }}
                     fullWidth
                     size="small"
                     variant="outlined"
-                    // error={formErrors?.email !== undefined}
-                    // helperText={formErrors?.email}
-                    // color={formErrors?.email !== undefined ? 'error' : 'primary'}
+                    error={formErrors?.long_url !== undefined}
+                    helperText={formErrors?.long_url}
+                    color={formErrors?.long_url !== undefined ? 'error' : 'primary'}
                 />
             </Box>
         </Box>

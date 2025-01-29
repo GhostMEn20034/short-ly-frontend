@@ -16,9 +16,10 @@ interface LinkListItemProps {
     item: LinkItem;
     goToEditPage: () => void;
     goToDetailsPage: () => void;
+    openDeleteLinkDialog: (item: LinkItem) => void;
 }
 
-export default function LinkListItem({item, goToEditPage, goToDetailsPage}: LinkListItemProps) {
+export default function LinkListItem({item, goToEditPage, goToDetailsPage, openDeleteLinkDialog}: LinkListItemProps) {
 
     return (
         <Box sx={{padding: 2, backgroundColor: "white", borderRadius: "8px"}}>
@@ -83,6 +84,7 @@ export default function LinkListItem({item, goToEditPage, goToDetailsPage}: Link
                         shortLink={`${apiBaseUrl}/${item.shortCode}`}
                         goToEditPage={goToEditPage}
                         goToDetailsPage={goToDetailsPage}
+                        openDeleteLinkDialog={() => openDeleteLinkDialog(item)}
                     />
                 </Grid>
             </Grid>

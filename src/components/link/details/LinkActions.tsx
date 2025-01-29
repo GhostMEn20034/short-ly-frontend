@@ -10,11 +10,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface ListItemActionsProps {
     shortLink: string;
     goToEditPage: () => void;
+    openDeleteLinkDialog: () => void;
 }
 
-export default function LinkDetailsActions({ shortLink, goToEditPage }: ListItemActionsProps) {
+export default function LinkDetailsActions({ shortLink, goToEditPage, openDeleteLinkDialog }: ListItemActionsProps) {
     const menuItems: ActionMenuItem[] = [
-        {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: () => {}},
+        {menuItemTitle: "Delete", iconName: DeleteIcon, onClick: openDeleteLinkDialog},
     ];
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

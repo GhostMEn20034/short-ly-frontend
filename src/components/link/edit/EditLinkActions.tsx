@@ -3,9 +3,10 @@ import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 
 interface EditLinkActionsProps {
     goBack: () => void;
+    handleSubmit: () => void | Promise<void>;
 }
 
-export default function EditLinkActions({goBack }: EditLinkActionsProps) {
+export default function EditLinkActions({goBack, handleSubmit }: EditLinkActionsProps) {
     return (
         <Box display="flex" gap={3} justifyContent="flex-end">
             <Box>
@@ -14,7 +15,7 @@ export default function EditLinkActions({goBack }: EditLinkActionsProps) {
                 </DefaultButton>
             </Box>
             <Box>
-                <DefaultButton variant="contained">
+                <DefaultButton variant="contained" onClick={handleSubmit}>
                     Save
                 </DefaultButton>
             </Box>
