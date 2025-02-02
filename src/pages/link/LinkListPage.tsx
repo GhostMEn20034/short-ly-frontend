@@ -2,10 +2,6 @@ import React from "react";
 import Box from "@mui/material/Box";
 import {LinkItem} from "@app-types/link.ts";
 import {Link as RouterLink, useSearchParams, useNavigate} from "react-router";
-import dayjs from "dayjs";
-import LocalizedFormat from "dayjs/plugin/localizedFormat";
-import Timezone from "dayjs/plugin/timezone";
-import UTC from "dayjs/plugin/utc";
 import LinkListItem from "@app-components/link/list/ListItem.tsx";
 import Typography from "@mui/material/Typography";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
@@ -15,22 +11,27 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import {blueGrey} from "@mui/material/colors";
 import {AxiosInstance, isAxiosError} from "axios";
 import {convertListOfLinksResponse} from "@app-utils/link/convertResponse.ts";
-import {changeQueryParams} from "@app-utils/urlParams/editUrlParams.ts";
+import {changeQueryParams, deleteQueryParams} from "@app-utils/urlParams/editUrlParams.ts";
 import DefaultPagination from "@app-components/common/pagination/DefaultPagination.tsx";
 import Link from "@mui/material/Link";
 import DeleteLinkDialog from "@app-components/link/delete/DeleteLinkDialog.tsx";
-
-
-dayjs.extend(LocalizedFormat);
-dayjs.extend(Timezone)
-dayjs.extend(UTC);
+import FilterByDateRangeDialog from "@app-components/link/list/FilterByDateRangeDialog.tsx";
+import {DateRange} from "@app-types/common.ts";
+import {extractDateRange} from "@app-utils/dates/dateExtraction.ts";
+import {generateQueryParams} from "@app-utils/api/queryParams.ts";
 
 
 export default function LinkListPage({api}: { api: AxiosInstance }) {
     const deleteLinkDialogName = 'deleteLink';
+    const filterByDateRangeDialogName = 'filterByDateRange';
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+
+    const dateFrom = searchParams.get("dateFrom");
+    const dateTo = searchParams.get("dateTo");
+
+    const dateRange: DateRange = extractDateRange(dateFrom, dateTo);
 
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = 15;
@@ -38,6 +39,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
     const [pageCount, setPageCount] = React.useState<number>(1);
 
     const [links, setLinks] = React.useState<LinkItem[] | null>(null);
+    const [linksCount, setLinksCount] = React.useState<number>(0);
     const [itemToDelete, setItemToDelete] = React.useState<LinkItem | null>(null);
     const [openedDialog, setOpenedDialog] = React.useState<string | null>(null);
     const [deleteLinkErrorMessage, setDeleteLinkErrorMessage] = React.useState<string | null>(null);
@@ -70,7 +72,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                     prevLinks?.filter(item => item.shortCode !== itemToDelete.shortCode) ?? []
                 );
             } else {
-                setSearchParams(changeQueryParams(searchParams, { page: 1 }));
+                setSearchParams(changeQueryParams(searchParams, {page: 1}));
             }
             closeDeleteLinkDialog();
         } catch (error) {
@@ -83,20 +85,44 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
     };
 
     const getLinkList = async () => {
-        const params = {
-            page: page,
-            page_size: pageSize,
-        };
+        const params = generateQueryParams(page, pageSize, dateRange.dateFrom, dateRange.dateTo);
 
         try {
             const response = await api.get("/api/v1/urls/", {params});
             const data = await response.data;
             setLinks(convertListOfLinksResponse(data.items));
             setPageCount(data.pagination.total_pages);
+            setLinksCount(data.pagination.total_items);
         } catch (error: unknown) {
             console.log(error);
         }
     };
+
+    const handleSubmitDateRangeFilter = (dateRange: DateRange) => {
+        const params: Record<string, string | number> = {
+            'page': 1,
+        };
+
+        let updatedSearchParams = searchParams;
+
+        if (dateRange.dateFrom !== null && dateRange.dateTo !== null) {
+            params['dateFrom'] = dateRange.dateFrom.format('YYYY-MM-DD');
+            params['dateTo'] = dateRange.dateTo.format('YYYY-MM-DD');
+        } else {
+            updatedSearchParams = deleteQueryParams(searchParams, ["dateFrom", "dateTo"]);
+        }
+        updatedSearchParams = changeQueryParams(updatedSearchParams, params)
+        setSearchParams(updatedSearchParams);
+        setOpenedDialog(null);
+    };
+
+    const clearFilters = () => {
+        setSearchParams(deleteQueryParams(searchParams, [
+            "dateFrom", "dateTo"
+        ]));
+    };
+
+    const filtersApplied = () => dateRange.dateFrom !== null && dateRange.dateTo !== null;
 
     React.useEffect(() => {
         document.title = "Shortly | Links"
@@ -104,7 +130,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
 
     React.useEffect(() => {
         getLinkList();
-    }, [page]);
+    }, [page, dateFrom, dateTo]);
 
     return (
         <Box>
@@ -126,13 +152,30 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                 </Box>
             </Box>
             <Box sx={{mt: 2}}>
-                <DefaultButton
-                    color="secondary"
-                    variant="contained"
-                    startIcon={<CalendarTodayIcon/>}
-                >
-                    Filter by created date
-                </DefaultButton>
+                <Box display="flex" alignItems="center" gap={1}>
+                    <DefaultButton
+                        color={dateRange.dateFrom !== null && dateRange.dateTo !== null ? "primary" : "secondary"}
+                        variant="outlined"
+                        startIcon={<CalendarTodayIcon/>}
+                        onClick={() => setOpenedDialog(filterByDateRangeDialogName)}
+                    >
+                        {
+                            dateRange.dateFrom !== null && dateRange.dateTo !== null ?
+                                `${dateRange.dateFrom.format('MMM D')} - ${dateRange.dateTo.format('MMM D')}` :
+                                "Filter by created date"
+                        }
+                    </DefaultButton>
+                    {filtersApplied() && (
+                        <>
+                            <Typography variant="body1">
+                                {linksCount} matches found
+                            </Typography>
+                            <DefaultButton onClick={clearFilters}>
+                                Clear
+                            </DefaultButton>
+                        </>
+                    )}
+                </Box>
             </Box>
             <Divider sx={{mt: 2, mb: 4}}/>
             {links?.length ? (
@@ -150,12 +193,18 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                 </Box>
             ) : (
                 <Box display="flex" justifyContent="center">
-                    <Typography variant="h6">
-                        You haven't created a link yet. &nbsp;
-                        <Link component={RouterLink} to={`/${rootRoutePrefixes.links}/create`}>
-                            Create one
-                        </Link>
-                    </Typography>
+                    {!filtersApplied() ? (
+                        <Typography variant="h6">
+                            You haven't created a link yet. &nbsp;
+                            <Link component={RouterLink} to={`/${rootRoutePrefixes.links}/create`}>
+                                Create one
+                            </Link>
+                        </Typography>
+                    ) : (
+                        <Typography variant="h6">
+                            No results found. Try adjusting your filters.
+                        </Typography>
+                    )}
                 </Box>
             )}
             {pageCount > 1 && (
@@ -185,6 +234,12 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                 deleteLinkErrorMessage={deleteLinkErrorMessage}
                 setDeleteLinkErrorMessage={setDeleteLinkErrorMessage}
                 handleSubmit={deleteLink}
+            />
+            <FilterByDateRangeDialog
+                open={openedDialog === filterByDateRangeDialogName}
+                handleClose={() => setOpenedDialog(null)}
+                handleSubmit={handleSubmitDateRangeFilter}
+                dateRange={dateRange}
             />
         </Box>
     );

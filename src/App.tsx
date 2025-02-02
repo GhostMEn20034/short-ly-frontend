@@ -8,9 +8,17 @@ import useAxios from "@app-utils/useAxios.ts";
 import NavigationBar from "@app-components/common/dashboard/NavigationBar.tsx";
 import routeNames from "@app-consts/routeNames.ts";
 import PrivateRoute from "@app-components/common/react-router/PrivateRoute.tsx";
-
 import {UserProvider} from "@app-context/UserContext.tsx";
 import LinkRoutes from "./routes/LinkRoutes.tsx";
+import dayjs from "dayjs";
+// DayJS plugins
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+import Timezone from "dayjs/plugin/timezone";
+import UTC from "dayjs/plugin/utc";
+
+dayjs.extend(LocalizedFormat);
+dayjs.extend(Timezone)
+dayjs.extend(UTC);
 
 function App() {
 

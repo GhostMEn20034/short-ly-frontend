@@ -49,7 +49,7 @@ export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPa
                 <DefaultButton
                     onClick={copyShortLink}
                     startIcon={<ContentCopyOutlinedIcon />}
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                 >
@@ -60,7 +60,7 @@ export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPa
                 <DefaultButton
                     onClick={goToEditPage}
                     startIcon={<EditIcon />}
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                 >
@@ -69,7 +69,7 @@ export default function ListItemActions({ shortLink, goToEditPage, goToDetailsPa
             </Box>
             <Box>
                 <DefaultButton
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                     onClick={handleClick}

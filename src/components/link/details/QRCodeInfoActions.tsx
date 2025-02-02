@@ -31,7 +31,7 @@ export default function QRCodeInfoActions() {
             <Box>
                 <DefaultButton
                     startIcon={<BarChartOutlinedIcon />}
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                 >
                     View Details
@@ -39,7 +39,7 @@ export default function QRCodeInfoActions() {
             </Box>
             <Box>
                 <DefaultButton
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     onClick={handleClick}
                 >

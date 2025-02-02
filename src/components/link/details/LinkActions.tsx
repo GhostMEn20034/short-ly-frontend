@@ -44,7 +44,7 @@ export default function LinkDetailsActions({ shortLink, goToEditPage, openDelete
                 <DefaultButton
                     onClick={copyShortLink}
                     startIcon={<ContentCopyOutlinedIcon />}
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                 >
@@ -55,7 +55,7 @@ export default function LinkDetailsActions({ shortLink, goToEditPage, openDelete
                 <DefaultButton
                     onClick={goToEditPage}
                     startIcon={<EditIcon />}
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                 >
@@ -64,7 +64,7 @@ export default function LinkDetailsActions({ shortLink, goToEditPage, openDelete
             </Box>
             <Box>
                 <DefaultButton
-                    variant="contained"
+                    variant="outlined"
                     color="secondary"
                     size="small"
                     onClick={handleClick}

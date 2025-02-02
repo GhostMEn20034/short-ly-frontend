@@ -27,7 +27,6 @@ export default function DeleteLinkDialog(
         <React.Fragment>
             <BootstrapDialog
                 onClose={handleClose}
-                aria-labelledby="customized-dialog-title"
                 open={open}
             >
                 <DialogTitle sx={{m: 0, p: 2, color: blueGrey[800]}} id="customized-dialog-title">

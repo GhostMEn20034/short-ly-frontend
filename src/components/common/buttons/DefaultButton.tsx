@@ -13,6 +13,7 @@ const DefaultButton = styled(Button)<ButtonProps | AdditionalProps>(({ theme }) 
     textTransform: 'none',
     fontSize: 16,
     padding: '6px 12px',
+    lineHeight: 1.5,
     fontFamily: [
         '-apple-system',
         'BlinkMacSystemFont',
@@ -41,8 +42,7 @@ const DefaultButton = styled(Button)<ButtonProps | AdditionalProps>(({ theme }) 
     // Secondary color
     '&.MuiButton-colorSecondary': {
         backgroundColor: 'white',
-        border: '1px solid',
-        lineHeight: 1.5,
+        // border: '1px solid',
         borderColor: '#e0e0e0',
         color: blueGrey[800],
         '&:hover': {

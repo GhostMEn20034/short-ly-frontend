@@ -32,5 +32,7 @@ export const deleteQueryParams = (
         newSearchParams.delete(key);
     }
 
+    console.log()
+
     return newSearchParams
 };
