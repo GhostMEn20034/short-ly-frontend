@@ -105,7 +105,6 @@ export default function SignIn({ emailState, handleSubmit}: SignInProps) {
                             />
                         </FormControl>
                         <DefaultButton
-                            size="small"
                             type="submit"
                             fullWidth
                             variant="contained"

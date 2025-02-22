@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import Timezone from "dayjs/plugin/timezone";
 import UTC from "dayjs/plugin/utc";
+import QRCodeRoutes from "./routes/QRCodeRoutes.tsx";
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(Timezone)
@@ -42,6 +43,9 @@ function App() {
 
                         <Route path={`/${rootRoutePrefixes.links}/*`} element={
                             <LinkRoutes api={api} />
+                        }/>
+                        <Route path={`/${rootRoutePrefixes.QRCodes}/*`} element={
+                           <QRCodeRoutes />
                         }/>
                     </Route>
                 </Routes>

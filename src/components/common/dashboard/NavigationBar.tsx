@@ -15,6 +15,8 @@ import {drawerWidth} from "@app-consts/componentSizes.ts";
 import {useContext} from "react";
 import UserProvider, {UserContextType} from "@app-context/UserContext.tsx";
 import AuthProvider, {AuthContextType} from "@app-context/AuthContext.tsx";
+import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import routeNames from "@app-consts/routeNames.ts";
 
 
 export default function NavigationBar({ pathname }: { pathname: string }) {
@@ -26,6 +28,9 @@ export default function NavigationBar({ pathname }: { pathname: string }) {
     const { logoutUser } = useContext(AuthProvider) as AuthContextType;
     const { userInfo } = useContext(UserProvider) as UserContextType;
 
+    const logout = () => {
+        logoutUser(`/${rootRoutePrefixes.auth}/${routeNames.signIn}`);
+    }
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -45,7 +50,7 @@ export default function NavigationBar({ pathname }: { pathname: string }) {
                             open={open}
                             handleDrawerOpen={handleDrawerOpen}
                             user={userInfo}
-                            logout={logoutUser}
+                            logout={logout}
                         />
                     </DefaultAppBar>
                     <DefaultDrawer variant="permanent" open={open}>
@@ -70,7 +75,7 @@ export default function NavigationBar({ pathname }: { pathname: string }) {
                             open={open}
                             handleDrawerOpen={handleDrawerOpen}
                             user={userInfo}
-                            logout={logoutUser}
+                            logout={logout}
                         />
                     </MobileAppBar>
                     <Drawer
