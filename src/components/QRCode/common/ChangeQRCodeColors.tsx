@@ -11,6 +11,7 @@ import {ColorType, QRPart} from "@app-types/qrCode.ts";
 import {StateField} from "@app-types/common.ts";
 import {Options} from "qr-code-styling";
 import QRCodeGradientColorSelector from "@app-components/QRCode/common/QRCodeGradientColorSelector.tsx";
+import {getDefaultGradientColor} from "@app-utils/qrCode/customization/colorOptions.ts";
 
 
 interface ChangeQRCodeColorsProps {
@@ -19,12 +20,8 @@ interface ChangeQRCodeColorsProps {
 
 
 export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
-    const [dotsColorType, setDotsColorType] = React.useState<ColorType>(
-        !options.value.dotsOptions?.gradient ? "single" : "gradient"
-    );
-    const [backgroundColorType, setBackgroundColorType] = React.useState<ColorType>(
-        !options.value.backgroundOptions?.gradient ? "single" : "gradient"
-    );
+    const [dotsColorType, setDotsColorType] = React.useState<ColorType>("single");
+    const [backgroundColorType, setBackgroundColorType] = React.useState<ColorType>("single");
 
     const changeColorType = (
         colorType: ColorType,
@@ -39,12 +36,12 @@ export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
                     cornersSquareOptions: {
                         ...prevState.cornersSquareOptions,
                         color: "#000000",
-                        ...(colorType === "single" ? { gradient: undefined } : {}), // Reset gradient
+                        ...(colorType === "single" ? { gradient: undefined } : {gradient: getDefaultGradientColor()}), // Reset gradient if color type is single
                     },
                     cornersDotOptions: {
                         ...prevState.cornersDotOptions,
                         color: "#000000",
-                        ...(colorType === "single" ? { gradient: undefined } : {}), // Reset gradient
+                        ...(colorType === "single" ? { gradient: undefined } : {gradient: getDefaultGradientColor()}), // Reset gradient if color type is single
                     },
                 }
             }
@@ -58,7 +55,7 @@ export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
                 [qrPartKey]: {
                     ...prevState[qrPartKey],
                     color: qrPart === "code" ? "#000000": "#ffffff",
-                    gradient: null,
+                    gradient: undefined,
                 },
                 ...changeSquareColor(prevState),
             }));
@@ -81,6 +78,15 @@ export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
         }
     };
 
+    React.useEffect(() => {
+        setDotsColorType(
+            !options.value.dotsOptions?.gradient ? "single" : "gradient"
+        );
+        setBackgroundColorType(
+            !options.value.backgroundOptions?.gradient ? "single" : "gradient"
+        );
+    }, [options.value]);
+
     return (
         <>
             <Box sx={{mt: 2, display: "flex", gap: 2,}}>
@@ -93,6 +99,7 @@ export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
                             changeColorType(e.target.value as ColorType, "code");
                             setDotsColorType(e.target.value as ColorType);
                         }}
+                        sx={{ minWidth: "140px" }}
                     >
                         {qrCodeElementColorTypes().map(({value, name}) => (
                             <MenuItem key={value} value={value}>
@@ -123,6 +130,7 @@ export default function ChangeQRCodeColors({options}: ChangeQRCodeColorsProps) {
                             changeColorType(e.target.value as ColorType, "background");
                             setBackgroundColorType(e.target.value as ColorType);
                         }}
+                        sx={{ minWidth: "140px" }}
                     >
                         {qrCodeElementColorTypes().map(({value, name}) => (
                             <MenuItem key={value} value={value} sx={{}}>

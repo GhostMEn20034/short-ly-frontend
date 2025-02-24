@@ -20,13 +20,6 @@ interface DesignCustomizationProps {
 
 export default function DesignCustomization({options}: DesignCustomizationProps) {
 
-    // const onDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     options.setState(options => ({
-    //         ...options,
-    //         data: event.target.value
-    //     }));
-    // };
-
     const onLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         options.setState(options => ({
             ...options,

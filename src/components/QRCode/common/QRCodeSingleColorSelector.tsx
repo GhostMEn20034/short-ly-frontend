@@ -36,7 +36,7 @@ export default function QRCodeSingleColorSelector({options, qrPart}: QRCodeSingl
                     color: newValue,
                 },
             }),
-        }))
+        }));
     };
 
     const format: MuiColorInputFormat = 'hex';

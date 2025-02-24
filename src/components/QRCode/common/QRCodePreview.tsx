@@ -7,9 +7,10 @@ import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 
 interface QRCodePreviewProps {
     qrCodeRef: React.RefObject<HTMLDivElement>;
+    resetQRCodeDesign: () => void;
 }
 
-export default function QRCodePreview({qrCodeRef}: QRCodePreviewProps) {
+export default function QRCodePreview({qrCodeRef, resetQRCodeDesign}: QRCodePreviewProps) {
     return (
         <Box
             display="flex"
@@ -32,7 +33,7 @@ export default function QRCodePreview({qrCodeRef}: QRCodePreviewProps) {
                 </Typography>
             </Box>
             <Box sx={{mt: 0.5}}>
-                <DefaultButton startIcon={<RestartAltOutlinedIcon/>}>
+                <DefaultButton startIcon={<RestartAltOutlinedIcon/>} onClick={resetQRCodeDesign}>
                     Reset To Default
                 </DefaultButton>
             </Box>
