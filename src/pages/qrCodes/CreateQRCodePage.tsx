@@ -15,10 +15,14 @@ import DesignCustomization from "@app-components/QRCode/common/DesignCustomizati
 import CreateLinkForm from "@app-components/link/create/CreateLinkForm.tsx";
 import {blueGrey} from "@mui/material/colors";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
-import {getDefaultQrCodeOptions} from "@app-utils/qrCode/customization/options.ts";
+import {getDefaultQrCodeOptions, getQrCodeOptionsForStorage} from "@app-utils/qrCode/customization/options.ts";
+import axios, {AxiosInstance} from "axios";
+import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import {parseErrors} from "@app-utils/errorParsers.ts";
+import {useNavigate} from "react-router";
 
 
-export default function CreateQRCodePage() {
+export default function CreateQRCodePage({api}: { api: AxiosInstance }) {
     const [options, setOptions] = React.useState<Options>(getDefaultQrCodeOptions());
     // New Link Data
     const [friendlyName, setFriendlyName] = React.useState<string | null>(null); // Or you can call it Link's title
@@ -26,15 +30,59 @@ export default function CreateQRCodePage() {
     const [useCustomShortCode, setUseCustomShortCode] = React.useState<boolean>(false);
     const [customShortCode, setCustomShortCode] = React.useState<string | null>(null);
     // Errors in Link Data
-    const [formErrors] = useState<Record<string, string[]> | null>(null);
+    const [formErrors, setFormErrors] = useState<Record<string, string[]> | null>(null);
 
     const [activeStep, setActiveStep] = React.useState(0);
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean;
     }>({});
+    // Stores indexes of steps where errors are occurred
+    const [stepsWithErrors, setStepsWithErrors] = React.useState<number[]>([]);
 
     const [qrCode] = React.useState<QRCodeStyling>(new QRCodeStyling(options));
     const qrCodeRef = React.useRef<HTMLDivElement>(null);
+
+    const navigate = useNavigate();
+
+    const createQRCode = async () => {
+        try {
+            const requestBody = {
+                "linkToCreate": {
+                    "friendly_name": friendlyName,
+                    "is_short_code_custom": useCustomShortCode,
+                    "long_url": destination,
+                    "short_code": customShortCode,
+                },
+                "qrCode": {
+                    "image": options.image,
+                    "customization": getQrCodeOptionsForStorage(options),
+                }
+            };
+            await api.post(`/api/v1/qr-codes/`, requestBody);
+            navigate(`/${rootRoutePrefixes.QRCodes}/`);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const parsedErrors = parseErrors(error.response!.data.detail);
+                setFormErrors(parsedErrors);
+
+                const step0Keys = new Set(["friendly_name", "is_short_code_custom", "long_url", "short_code"]);
+                const step1Keys = new Set(["image"]);
+
+                const errorSteps = new Set<number>();
+
+                // Map errors to corresponding steps
+                Object.keys(parsedErrors).forEach((key) => {
+                    if (step0Keys.has(key)) {
+                        errorSteps.add(0);
+                    } else if (step1Keys.has(key)) {
+                        errorSteps.add(1);
+                    }
+                });
+                // Update state with unique step indices
+                setStepsWithErrors([...errorSteps]);
+            }
+        }
+    };
 
     const resetQRCodeDesign = () => {
         setOptions(getDefaultQrCodeOptions());
@@ -47,12 +95,9 @@ export default function CreateQRCodePage() {
     }, [qrCode, qrCodeRef]);
 
     React.useEffect(() => {
-        console.log("it works")
         if (!qrCode) return;
         qrCode.update(options);
     }, [qrCode, options]);
-
-    console.log(options)
 
     return (
         <Box>
@@ -67,6 +112,7 @@ export default function CreateQRCodePage() {
                         setState: setCompleted,
                     }}
                     stepTitles={createQRCodeStepTitles}
+                    stepsWithErrors={stepsWithErrors}
                 />
             </Box>
             <Grid container sx={{mt: 2,}}>
@@ -120,6 +166,7 @@ export default function CreateQRCodePage() {
                                             value: options,
                                             setState: setOptions,
                                         }}
+                                        formErrors={formErrors}
                                     />
                                 </Box>
                             </Box>
@@ -135,7 +182,7 @@ export default function CreateQRCodePage() {
                 <Box display="flex" justifyContent="space-between"
                      sx={{mt: 2, backgroundColor: 'white', borderRadius: "10px", padding: "15px"}}>
                     <Box>
-                        <DefaultButton color="secondary" variant="outlined">
+                        <DefaultButton color="secondary" variant="outlined" onClick={() => navigate(-1)}>
                             Cancel
                         </DefaultButton>
                     </Box>
@@ -160,7 +207,7 @@ export default function CreateQRCodePage() {
                 <Box display="flex" justifyContent="space-between"
                      sx={{mt: 2, backgroundColor: 'white', borderRadius: "10px", padding: "15px"}}>
                     <Box>
-                        <DefaultButton color="secondary" variant="outlined">
+                        <DefaultButton color="secondary" variant="outlined" onClick={() => navigate(-1)}>
                             Cancel
                         </DefaultButton>
                     </Box>
@@ -181,6 +228,7 @@ export default function CreateQRCodePage() {
                         </DefaultButton>
                         <DefaultButton
                             variant="contained"
+                            onClick={createQRCode}
                         >
                             Create the code
                         </DefaultButton>

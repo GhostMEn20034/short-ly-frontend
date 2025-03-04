@@ -13,7 +13,7 @@ export function parseErrors(errors: ErrorDetail[]): Record<string, string[]> {
     const result: Record<string, string[]> = {};
 
     errors.forEach((error) => {
-        const fieldName = error.loc[1];
+        const fieldName = error.loc[error.loc.length - 1];
 
         const errorMessage = error.ctx?.reason ? error.ctx.reason : error.msg;
 

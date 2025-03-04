@@ -45,7 +45,7 @@ function App() {
                             <LinkRoutes api={api} />
                         }/>
                         <Route path={`/${rootRoutePrefixes.QRCodes}/*`} element={
-                           <QRCodeRoutes />
+                           <QRCodeRoutes api={api} />
                         }/>
                     </Route>
                 </Routes>

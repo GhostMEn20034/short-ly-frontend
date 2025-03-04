@@ -9,9 +9,11 @@ import DialogActions from "@mui/material/DialogActions";
 import Typography from "@mui/material/Typography";
 import blueGrey from "@mui/material/colors/blueGrey";
 import {Alert} from "@mui/material";
+import {LinkItem} from "@app-types/link.ts";
 
 
 interface DeleteLinkDialogProps {
+    linkToDelete: LinkItem | null
     handleClose: () => void;
     open: boolean;
     handleSubmit: () => Promise<void>;
@@ -21,7 +23,14 @@ interface DeleteLinkDialogProps {
 
 
 export default function DeleteLinkDialog(
-    {open, handleClose, handleSubmit, deleteLinkErrorMessage, setDeleteLinkErrorMessage}: DeleteLinkDialogProps
+    {
+        linkToDelete,
+        open,
+        handleClose,
+        handleSubmit,
+        deleteLinkErrorMessage,
+        setDeleteLinkErrorMessage
+    }: DeleteLinkDialogProps
 ) {
     return (
         <React.Fragment>
@@ -30,7 +39,7 @@ export default function DeleteLinkDialog(
                 open={open}
             >
                 <DialogTitle sx={{m: 0, p: 2, color: blueGrey[800]}} id="customized-dialog-title">
-                   <b> Delete Link?</b>
+                    <b> Delete Link?</b>
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -46,7 +55,7 @@ export default function DeleteLinkDialog(
                 </IconButton>
                 <DialogContent dividers>
                     {deleteLinkErrorMessage && (
-                        <Alert severity="error" sx={{ my: 2 }} onClose={() => setDeleteLinkErrorMessage(null)}>
+                        <Alert severity="error" sx={{my: 2}} onClose={() => setDeleteLinkErrorMessage(null)}>
                             {deleteLinkErrorMessage}
                         </Alert>
                     )}
@@ -54,11 +63,13 @@ export default function DeleteLinkDialog(
                         If you delete this link,
                         all future requests to this short link will result in an HTTP 404 Not Found error.
                     </Typography>
-                    <Alert severity="warning">
-                        If this link is attached to a QR Code, it will also be removed from your account.
-                    </Alert>
+                    {linkToDelete?.qrCodeId && (
+                        <Alert severity="warning">
+                            This link is also attached to a QR Code, which will also be removed from your account.
+                        </Alert>
+                    )}
                 </DialogContent>
-                <DialogActions sx={{ gap: 2 }}>
+                <DialogActions sx={{gap: 2}}>
                     <DefaultButton onClick={handleClose}>
                         Cancel
                     </DefaultButton>

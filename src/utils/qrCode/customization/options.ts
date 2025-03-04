@@ -70,3 +70,13 @@ export function getDefaultQrCodeOptions(dataToOverride: Options = {}): Options {
         ...dataToOverride,
     };
 }
+
+export function getQrCodeOptionsForStorage(options: Options): Options {
+    /* Extracts and returns qr code options that need to be stored on the backend side */
+    return {
+        dotsOptions: options.dotsOptions,
+        backgroundOptions: options.backgroundOptions,
+        cornersSquareOptions: options.cornersSquareOptions,
+        cornersDotOptions: options.cornersDotOptions,
+    };
+}

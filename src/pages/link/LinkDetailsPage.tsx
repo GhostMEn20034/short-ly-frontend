@@ -16,6 +16,10 @@ import QRCodeInfo from "@app-components/link/details/QRCodeInfo.tsx";
 import React, {useState} from "react";
 import Typography from "@mui/material/Typography";
 import DeleteLinkDialog from "@app-components/link/delete/DeleteLinkDialog.tsx";
+import {QRCodeItem} from "@app-types/qrCode.ts";
+import QRCodeStyling, {Options} from "qr-code-styling";
+import {getDefaultQrCodeOptions} from "@app-utils/qrCode/customization/options.ts";
+import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
 
 
 dayjs.extend(LocalizedFormat);
@@ -28,6 +32,10 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
     const deleteLinkDialogName = 'deleteLink';
 
     const [link, setLink] = React.useState<LinkItem | null>(null);
+    const [qrCode, setQRCode] = useState<QRCodeItem | null>(null);
+    const [options, setOptions] = React.useState<Options>(getDefaultQrCodeOptions());
+    const [qrCodeObject] = React.useState<QRCodeStyling>(new QRCodeStyling(options));
+    const qrCodeRef = React.useRef<HTMLDivElement>(null);
     const [errorStatusCode, setErrorStatusCode] = useState<number | null>(null);
     const [openedDialog, setOpenedDialog] = React.useState<string | null>(null);
     const [deleteLinkErrorMessage, setDeleteLinkErrorMessage] = React.useState<string | null>(null);
@@ -40,7 +48,24 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
         try {
             const response = await api.get(`/api/v1/urls/${shortCode}`);
             const data = await response.data;
-            setLink(convertLinkDetailsResponse(data.item));
+            const receivedQRCode = data.qrCode;
+            setLink(convertLinkDetailsResponse(data.item, receivedQRCode));
+            setQRCode(receivedQRCode);
+            if (receivedQRCode) {
+                setOptions((prevOptions: Options) => ({
+                    ...prevOptions,
+                    margin: 1,
+                    imageOptions: {
+                        ...prevOptions.imageOptions,
+                        margin: 5,
+                    },
+                    width: qrCodePresets.qrCodeList.width,
+                    height: qrCodePresets.qrCodeList.height,
+                    data: `${window.location.protocol}//${window.location.host}/${shortCode}`,
+                    image: receivedQRCode.image || undefined,
+                    ...receivedQRCode.customization
+                }));
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 setErrorStatusCode(error.response!.status);
@@ -69,9 +94,25 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
         navigate(`/${rootRoutePrefixes.links}/${shortCode}/edit`);
     };
 
+    const goToQRCodeCreationPage = () => {
+        navigate(`/${rootRoutePrefixes.QRCodes}/create/${shortCode}`);
+    }
+
     React.useEffect(() => {
         getLink();
     }, []);
+
+    React.useEffect(() => {
+        if (qrCodeRef.current) {
+            qrCodeObject.append(qrCodeRef.current);
+        }
+    }, [qrCode, qrCodeRef]);
+
+
+    React.useEffect(() => {
+        if (!qrCode) return;
+        qrCodeObject.update(options);
+    }, [qrCodeObject, qrCode, options]);
 
     return (
         <Box>
@@ -109,12 +150,17 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
                             </Box>
                         )}
                         <Box sx={{mt: 3}}>
-                            <QRCodeInfo/>
+                            <QRCodeInfo
+                                qrCodeRef={qrCodeRef}
+                                qrCode={qrCode}
+                                goToQRCodeCreationPage={goToQRCodeCreationPage}
+                            />
                         </Box>
                     </Box>
                 </Box>
             )}
             <DeleteLinkDialog
+                linkToDelete={link}
                 open={openedDialog === deleteLinkDialogName}
                 handleClose={() => setOpenedDialog(null)}
                 deleteLinkErrorMessage={deleteLinkErrorMessage}

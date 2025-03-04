@@ -6,14 +6,33 @@ import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 import React from "react";
 import ActionMenu from "@app-components/common/menu/ActionMenu.tsx";
 import {ActionMenuItem} from "@app-types/menu.ts";
+import {QRCodeItem} from "@app-types/qrCode.ts";
 
 
-export default function QRCodeInfoActions() {
+interface QRCodeInfoActionsProps {
+    qrCode: QRCodeItem | null;
+    goToQRCodeCreationPage: () => void;
+}
+
+
+export default function QRCodeInfoActions({qrCode, goToQRCodeCreationPage}: QRCodeInfoActionsProps) {
     const menuItems: ActionMenuItem[] = [
-        {menuItemTitle: "Customize", iconName: ColorLensOutlinedIcon, onClick: () => {}},
-        {menuItemTitle: "Download PNG", iconName: FileDownloadOutlinedIcon, onClick: () => {}},
-        {menuItemTitle: "Download JPEG", iconName: FileDownloadOutlinedIcon, onClick: () => {}},
-        {menuItemTitle: "Download WEBP", iconName: FileDownloadOutlinedIcon, onClick: () => {}},
+        {
+            menuItemTitle: "Customize", iconName: ColorLensOutlinedIcon, onClick: () => {
+            }
+        },
+        {
+            menuItemTitle: "Download PNG", iconName: FileDownloadOutlinedIcon, onClick: () => {
+            }
+        },
+        {
+            menuItemTitle: "Download JPEG", iconName: FileDownloadOutlinedIcon, onClick: () => {
+            }
+        },
+        {
+            menuItemTitle: "Download WEBP", iconName: FileDownloadOutlinedIcon, onClick: () => {
+            }
+        },
     ];
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -27,31 +46,46 @@ export default function QRCodeInfoActions() {
     };
 
     return (
-        <Box display="flex" gap={0.5}>
-            <Box>
-                <DefaultButton
-                    startIcon={<BarChartOutlinedIcon />}
-                    variant="outlined"
-                    color="secondary"
-                >
-                    View Details
-                </DefaultButton>
-            </Box>
-            <Box>
-                <DefaultButton
-                    variant="outlined"
-                    color="secondary"
-                    onClick={handleClick}
-                >
-                    <b>...</b>
-                </DefaultButton>
-            </Box>
-            <ActionMenu
-                open={menuOpened}
-                anchorEl={anchorEl}
-                handleClose={handleClose}
-                actionMenuItems={menuItems}
-            />
-        </Box>
+        <>
+            {qrCode ? (
+                <Box display="flex" gap={0.5}>
+                    <Box>
+                        <DefaultButton
+                            startIcon={<BarChartOutlinedIcon/>}
+                            variant="outlined"
+                            color="secondary"
+                        >
+                            View Details
+                        </DefaultButton>
+                    </Box>
+                    <Box>
+                        <DefaultButton
+                            variant="outlined"
+                            color="secondary"
+                            onClick={handleClick}
+                        >
+                            <b>...</b>
+                        </DefaultButton>
+                    </Box>
+                    <ActionMenu
+                        open={menuOpened}
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                        actionMenuItems={menuItems}
+                    />
+                </Box>
+            ) : (
+                <Box>
+                    <DefaultButton
+                        startIcon={<BarChartOutlinedIcon/>}
+                        variant="outlined"
+                        color="secondary"
+                        onClick={goToQRCodeCreationPage}
+                    >
+                        Create QR Code
+                    </DefaultButton>
+                </Box>
+            )}
+        </>
     );
 }

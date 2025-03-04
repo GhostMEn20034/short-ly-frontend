@@ -15,10 +15,11 @@ import ChangeQRCodeColors from "@app-components/QRCode/common/ChangeQRCodeColors
 
 interface DesignCustomizationProps {
     options: StateField<Options>;
+    formErrors: Record<string, string[]> | null;
 }
 
 
-export default function DesignCustomization({options}: DesignCustomizationProps) {
+export default function DesignCustomization({options, formErrors}: DesignCustomizationProps) {
 
     const onLogoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         options.setState(options => ({
@@ -65,6 +66,9 @@ export default function DesignCustomization({options}: DesignCustomizationProps)
                     <TextField
                         value={options.value?.image ? options.value?.image : ""}
                         onChange={onLogoChange}
+                        error={Boolean(formErrors?.image)}
+                        helperText={formErrors?.image}
+                        color={formErrors?.image ? 'error' : 'primary'}
                     />
                 </FormControl>
             </Box>

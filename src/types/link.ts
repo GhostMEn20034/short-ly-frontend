@@ -6,6 +6,7 @@ export interface LinkItem {
     isShortCodeCustom: boolean | null;
     shortCode: string | null;
     longUrl: string | null;
+    qrCodeId: number | null;
     createdAt: Dayjs;
 }
 
@@ -14,6 +15,7 @@ export interface LinkItemInResponseBody {
     is_short_code_custom: boolean;
     short_code: string;
     long_url: string;
+    qr_code_id: number | null;
     created_at: Dayjs;
 }
 

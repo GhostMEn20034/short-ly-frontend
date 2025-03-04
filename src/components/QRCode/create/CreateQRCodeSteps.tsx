@@ -8,16 +8,17 @@ interface CreateQRCodeStepsProps {
     activeStep: StateField<number>;
     completedSteps: StateField<{ [k: number]: boolean }>;
     stepTitles: string[];
+    stepsWithErrors: number[];
 }
 
-export default function CreateQRCodeSteps({activeStep, completedSteps, stepTitles}: CreateQRCodeStepsProps) {
+export default function CreateQRCodeSteps({activeStep, completedSteps, stepTitles, stepsWithErrors}: CreateQRCodeStepsProps) {
 
     return (
         <Box>
             <Stepper nonLinear activeStep={activeStep.value}>
                 {stepTitles.map((label, index) => (
                     <Step key={label} completed={completedSteps.value[index]}>
-                        <StepLabel color="inherit">
+                        <StepLabel color="inherit" error={stepsWithErrors.includes(index)}>
                             {label}
                         </StepLabel>
                     </Step>

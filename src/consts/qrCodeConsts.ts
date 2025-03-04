@@ -14,7 +14,7 @@ export const dotsPatterns = (): { value: string, name: string }[] => (
     ]
 );
 
-export const cornerTypes = (): {value: string, name: string}[] => (
+export const cornerTypes = (): { value: string, name: string }[] => (
     [
         {value: "dot", name: "Dot"},
         {value: "dots", name: "Dots"},
@@ -26,16 +26,24 @@ export const cornerTypes = (): {value: string, name: string}[] => (
     ]
 );
 
-export const qrCodeElementColorTypes = (): {value: string, name: string}[] => (
+export const qrCodeElementColorTypes = (): { value: string, name: string }[] => (
     [
         {value: "single", name: "Single Color"},
         {value: "gradient", name: "Gradient"},
     ]
 );
 
-export const qrCodeColorGradientTypes = (): {value: string, name: string}[] => (
+export const qrCodeColorGradientTypes = (): { value: string, name: string }[] => (
     [
         {value: "linear", name: "Linear"},
         {value: "radial", name: "Radial"},
     ]
 );
+
+export const qrCodePresets: Record<string, Record<string, number>> = {
+    createQRCode: {width: 240, height: 240},
+    updateQRCode: {width: 240, height: 240},
+    linkDetails: {width: 144, height: 144},
+    qrCodeList: {width: 120, height: 120},
+    qrCodeDetails: {width: 136, height: 136},
+};

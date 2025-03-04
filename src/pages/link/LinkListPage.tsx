@@ -229,6 +229,7 @@ export default function LinkListPage({api}: { api: AxiosInstance }) {
                 </Box>
             )}
             <DeleteLinkDialog
+                linkToDelete={itemToDelete}
                 open={openedDialog === deleteLinkDialogName}
                 handleClose={closeDeleteLinkDialog}
                 deleteLinkErrorMessage={deleteLinkErrorMessage}
