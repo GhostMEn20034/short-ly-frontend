@@ -5,7 +5,6 @@ import QRCodeInfoActions from "@app-components/link/details/QRCodeInfoActions.ts
 import {blueGrey} from "@mui/material/colors";
 import {QRCodeItem} from "@app-types/qrCode.ts";
 import QRCodeContainer from "@app-components/link/details/QRCodeContainer.tsx";
-import Grid from "@mui/material/Grid2";
 
 
 interface QRCodeInfoProps {
@@ -23,17 +22,14 @@ export default function QRCodeInfo({qrCodeRef, qrCode, goToQRCodeCreationPage}: 
                     <b>QR Code</b>
                 </Typography>
             </Box>
-            <Grid container gap={2}>
-                <Grid size={{ sm: 12, md: 1.5,  }}>
-                    <QRCodeContainer
-                        qrCode={qrCode}
-                        qrCodeRef={qrCodeRef}
-                    />
-                </Grid>
-                <Grid size={{ sm: 12, md: 3 }}>
-                    <QRCodeInfoActions qrCode={qrCode} goToQRCodeCreationPage={goToQRCodeCreationPage}/>
-                </Grid>
-            </Grid>
+            <Box display="flex" gap={1.5} flexWrap="wrap" alignItems="flex-start">
+                <Box>
+                    <QRCodeContainer qrCode={qrCode} qrCodeRef={qrCodeRef} />
+                </Box>
+                <Box>
+                    <QRCodeInfoActions qrCode={qrCode} goToQRCodeCreationPage={goToQRCodeCreationPage} />
+                </Box>
+            </Box>
         </Box>
     );
 }

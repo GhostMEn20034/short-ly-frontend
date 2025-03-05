@@ -8,9 +8,16 @@ import RestartAltOutlinedIcon from '@mui/icons-material/RestartAltOutlined';
 interface QRCodePreviewProps {
     qrCodeRef: React.RefObject<HTMLDivElement>;
     resetQRCodeDesign: () => void;
+    showPreviewMessage: boolean;
+    showResetButton: boolean;
 }
 
-export default function QRCodePreview({qrCodeRef, resetQRCodeDesign}: QRCodePreviewProps) {
+export default function QRCodePreview({
+                                          qrCodeRef,
+                                          resetQRCodeDesign,
+                                          showPreviewMessage,
+                                          showResetButton,
+                                      }: QRCodePreviewProps) {
     return (
         <Box
             display="flex"
@@ -26,17 +33,21 @@ export default function QRCodePreview({qrCodeRef, resetQRCodeDesign}: QRCodePrev
             <Box>
                 <Box ref={qrCodeRef}/>
             </Box>
-            <Box display="flex" justifyContent="center" sx={{mt: 0.5}}>
-                <Typography variant="body2" align="center">
-                    This code is preview only, so don’t copy it just yet.
-                    Your code will be generated once you finish creating it.
-                </Typography>
-            </Box>
-            <Box sx={{mt: 0.5}}>
-                <DefaultButton startIcon={<RestartAltOutlinedIcon/>} onClick={resetQRCodeDesign}>
-                    Reset To Default
-                </DefaultButton>
-            </Box>
+            {showPreviewMessage && (
+                <Box display="flex" justifyContent="center" sx={{mt: 0.5}}>
+                    <Typography variant="body2" align="center">
+                        This code is preview only, so don’t copy it just yet.
+                        Your code will be generated once you finish creating it.
+                    </Typography>
+                </Box>
+            )}
+            {showResetButton && (
+                <Box sx={{mt: 0.5}}>
+                    <DefaultButton startIcon={<RestartAltOutlinedIcon/>} onClick={resetQRCodeDesign}>
+                        Reset To Default
+                    </DefaultButton>
+                </Box>
+            )}
         </Box>
     );
 }

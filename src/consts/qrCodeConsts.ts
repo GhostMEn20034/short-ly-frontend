@@ -43,7 +43,7 @@ export const qrCodeColorGradientTypes = (): { value: string, name: string }[] =>
 export const qrCodePresets: Record<string, Record<string, number>> = {
     createQRCode: {width: 240, height: 240},
     updateQRCode: {width: 240, height: 240},
-    linkDetails: {width: 144, height: 144},
+    linkDetails: {width: 150, height: 150},
     qrCodeList: {width: 120, height: 120},
     qrCodeDetails: {width: 136, height: 136},
 };

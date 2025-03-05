@@ -20,6 +20,7 @@ import {QRCodeItem} from "@app-types/qrCode.ts";
 import QRCodeStyling, {Options} from "qr-code-styling";
 import {getDefaultQrCodeOptions} from "@app-utils/qrCode/customization/options.ts";
 import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
+import {apiBaseUrl} from "@app-settings";
 
 
 dayjs.extend(LocalizedFormat);
@@ -57,13 +58,13 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
                     margin: 1,
                     imageOptions: {
                         ...prevOptions.imageOptions,
-                        margin: 5,
+                        margin: 4,
                     },
-                    width: qrCodePresets.qrCodeList.width,
-                    height: qrCodePresets.qrCodeList.height,
-                    data: `${window.location.protocol}//${window.location.host}/${shortCode}`,
+                    width: qrCodePresets.linkDetails.width,
+                    height: qrCodePresets.linkDetails.height,
+                    data: `${apiBaseUrl}/${shortCode}`,
                     image: receivedQRCode.image || undefined,
-                    ...receivedQRCode.customization
+                    ...receivedQRCode.customization,
                 }));
             }
         } catch (error) {

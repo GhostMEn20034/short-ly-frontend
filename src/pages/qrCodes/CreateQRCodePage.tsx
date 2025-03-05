@@ -175,7 +175,12 @@ export default function CreateQRCodePage({api}: { api: AxiosInstance }) {
                 </Grid>
                 <Grid size={{sm: 12, xs: 12, md: 5}} order={{xs: 1, sm: 1, md: 2}}
                       sx={{px: 10, my: 2}}>
-                    <QRCodePreview qrCodeRef={qrCodeRef} resetQRCodeDesign={resetQRCodeDesign} />
+                    <QRCodePreview
+                        qrCodeRef={qrCodeRef}
+                        resetQRCodeDesign={resetQRCodeDesign}
+                        showPreviewMessage={true}
+                        showResetButton={true}
+                    />
                 </Grid>
             </Grid>
             {activeStep === 0 && (

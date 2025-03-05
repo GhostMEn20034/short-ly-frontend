@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import QRCodeStyling, {Options} from "qr-code-styling";
 import {getDefaultQrCodeOptions, getQrCodeOptionsForStorage} from "@app-utils/qrCode/customization/options.ts";
 import Box from "@mui/material/Box";
@@ -24,8 +24,8 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
     const [options, setOptions] = React.useState<Options>(getDefaultQrCodeOptions());
     const [qrCode] = React.useState<QRCodeStyling>(new QRCodeStyling(options));
     const qrCodeRef = React.useRef<HTMLDivElement>(null);
-    const [errorStatusCode, setErrorStatusCode] = useState<number | null>(null);
-    const [formErrors, setFormErrors] = useState<Record<string, string[]> | null>(null);
+    const [errorStatusCode, setErrorStatusCode] = React.useState<number | null>(null);
+    const [formErrors, setFormErrors] = React.useState<Record<string, string[]> | null>(null);
 
     const navigate = useNavigate();
     const {shortCode} = useParams();
@@ -81,7 +81,6 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
     }, []);
 
     return (
-
         <Box>
             {errorStatusCode && errorStatusCode >= 400 && errorStatusCode < 500 ? (
                 <Box sx={{mt: 1}} justifySelf="center">
@@ -141,6 +140,8 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
                             <QRCodePreview
                                 qrCodeRef={qrCodeRef}
                                 resetQRCodeDesign={resetQRCodeDesign}
+                                showPreviewMessage={true}
+                                showResetButton={true}
                             />
                         </Grid>
                     </Grid>
