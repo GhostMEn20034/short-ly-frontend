@@ -7,17 +7,60 @@ import React from "react";
 import {ActionMenuItem} from "@app-types/menu.ts";
 import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
 import QrCodeOutlinedIcon from "@mui/icons-material/QrCodeOutlined";
+import {Options} from "qr-code-styling";
+import {QRCodeItemWithLink} from "@app-types/qrCode.ts";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import downloadQRCode from "@app-utils/qrCode/download.ts";
 
 
 interface QRCodeListItemActionsProps {
+    options: Options;
+    item: QRCodeItemWithLink;
     goToCustomizationPage: () => void;
     goToEditQRCodeContentPage: () => void;
+    goToLinkDetailsPage: () => void;
+    goToQRCodeDetailsPage: () => void;
 }
 
-export default function QRCodeListItemActions({goToEditQRCodeContentPage, goToCustomizationPage}: QRCodeListItemActionsProps) {
+export default function QRCodeListItemActions({
+                                                  options,
+                                                  item,
+                                                  goToEditQRCodeContentPage,
+                                                  goToCustomizationPage,
+                                                  goToLinkDetailsPage,
+                                                  goToQRCodeDetailsPage,
+                                              }: QRCodeListItemActionsProps) {
     const menuItems: ActionMenuItem[] = [
-        {menuItemTitle: "View QR Code Details", iconName: QrCodeOutlinedIcon, onClick: () => {""}},
-        {menuItemTitle: "View Short link", iconName: InsertLinkOutlinedIcon, onClick: () => {""}},
+        {
+            menuItemTitle: "View QR Code Details",
+            iconName: QrCodeOutlinedIcon,
+            onClick: goToQRCodeDetailsPage,
+        },
+        {
+            menuItemTitle: "View Short link",
+            iconName: InsertLinkOutlinedIcon,
+            onClick: goToLinkDetailsPage
+        },
+        {
+            menuItemTitle: "Download PNG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${item.link.short_code}`, "png"),
+        },
+        {
+            menuItemTitle: "Download JPEG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${item.link.short_code}`, "jpeg"),
+        },
+        {
+            menuItemTitle: "Download SVG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${item.link.short_code}`, "svg"),
+        },
+        {
+            menuItemTitle: "Download WEBP",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${item.link.short_code}`, "webp"),
+        },
     ];
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,7 +78,7 @@ export default function QRCodeListItemActions({goToEditQRCodeContentPage, goToCu
             <Box>
                 <DefaultButton
                     onClick={goToCustomizationPage}
-                    startIcon={<ColorLensOutlinedIcon />}
+                    startIcon={<ColorLensOutlinedIcon/>}
                     variant="outlined"
                     color="secondary"
                     size="small"
@@ -46,7 +89,7 @@ export default function QRCodeListItemActions({goToEditQRCodeContentPage, goToCu
             <Box>
                 <DefaultButton
                     onClick={goToEditQRCodeContentPage}
-                    startIcon={<EditIcon />}
+                    startIcon={<EditIcon/>}
                     variant="outlined"
                     color="secondary"
                     size="small"
@@ -69,6 +112,7 @@ export default function QRCodeListItemActions({goToEditQRCodeContentPage, goToCu
                 anchorEl={anchorEl}
                 handleClose={handleClose}
                 actionMenuItems={menuItems}
+                dividerAfterIndexes={[1, ]}
             />
         </Box>
     )

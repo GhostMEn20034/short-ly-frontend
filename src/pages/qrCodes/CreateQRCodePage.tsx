@@ -20,6 +20,8 @@ import axios, {AxiosInstance} from "axios";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
 import {useNavigate} from "react-router";
+import {useTheme} from "@mui/material/styles";
+import {useMediaQuery} from "@mui/material";
 
 
 export default function CreateQRCodePage({api}: { api: AxiosInstance }) {
@@ -43,6 +45,9 @@ export default function CreateQRCodePage({api}: { api: AxiosInstance }) {
     const qrCodeRef = React.useRef<HTMLDivElement>(null);
 
     const navigate = useNavigate();
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
     const createQRCode = async () => {
         try {
@@ -174,7 +179,12 @@ export default function CreateQRCodePage({api}: { api: AxiosInstance }) {
                     </Box>
                 </Grid>
                 <Grid size={{sm: 12, xs: 12, md: 5}} order={{xs: 1, sm: 1, md: 2}}
-                      sx={{px: 10, my: 2}}>
+                      sx={{
+                          px: 10, my: 2,
+                          position: isSmallScreen ? "relative" : "sticky",
+                          top: isSmallScreen ? "auto" : 100,
+                          alignSelf: "start",
+                      }}>
                     <QRCodePreview
                         qrCodeRef={qrCodeRef}
                         resetQRCodeDesign={resetQRCodeDesign}

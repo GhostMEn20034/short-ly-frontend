@@ -21,9 +21,12 @@ interface QRCodeItemProps {
     item: QRCodeItemWithLink;
     goToCustomizationPage: (qrCodeId: number) => void;
     goToEditQRCodeContentPage: (qrCodeId: number) => void;
+    goToLinkDetailsPage: (shortCode: string) => void;
+    goToQRCodeDetailsPage: (qrCodeId: number) => void;
 }
 
-export function QRCodeListItem({item, goToCustomizationPage, goToEditQRCodeContentPage}: QRCodeItemProps) {
+export function QRCodeListItem({item, goToCustomizationPage, goToEditQRCodeContentPage,
+                                   goToLinkDetailsPage, goToQRCodeDetailsPage}: QRCodeItemProps) {
     const [options] = React.useState<Options>(getDefaultQrCodeOptions({
         margin: 1,
         width: qrCodePresets.qrCodeList.width,
@@ -118,8 +121,12 @@ export function QRCodeListItem({item, goToCustomizationPage, goToEditQRCodeConte
                 </Grid>
                 <Grid size={{xs: 12, md: 5.5}}>
                     <QRCodeListItemActions
+                        options={options}
+                        item={item}
                         goToCustomizationPage={() => goToCustomizationPage(item.id)}
                         goToEditQRCodeContentPage={() => goToEditQRCodeContentPage(item.id)}
+                        goToLinkDetailsPage={() => goToLinkDetailsPage(item.link.short_code)}
+                        goToQRCodeDetailsPage={() => goToQRCodeDetailsPage(item.id)}
                     />
                 </Grid>
             </Grid>

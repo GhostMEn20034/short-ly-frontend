@@ -7,31 +7,52 @@ import React from "react";
 import ActionMenu from "@app-components/common/menu/ActionMenu.tsx";
 import {ActionMenuItem} from "@app-types/menu.ts";
 import {QRCodeItem} from "@app-types/qrCode.ts";
+import downloadQRCode from "@app-utils/qrCode/download.ts";
+import {LinkItem} from "@app-types/link.ts";
+import {Options} from "qr-code-styling";
 
 
 interface QRCodeInfoActionsProps {
     qrCode: QRCodeItem | null;
+    link: LinkItem;
+    options: Options;
     goToQRCodeCreationPage: () => void;
+    goToQRCodeCustomizationPage: () => void;
+    goToQRCodeDetailsPage: () => void;
 }
 
 
-export default function QRCodeInfoActions({qrCode, goToQRCodeCreationPage}: QRCodeInfoActionsProps) {
+export default function QRCodeInfoActions({
+                                              qrCode,
+                                              goToQRCodeCreationPage,
+                                              goToQRCodeCustomizationPage,
+                                              goToQRCodeDetailsPage,
+                                              link,
+                                              options,
+                                          }: QRCodeInfoActionsProps) {
     const menuItems: ActionMenuItem[] = [
         {
-            menuItemTitle: "Customize", iconName: ColorLensOutlinedIcon, onClick: () => {
-            }
+            menuItemTitle: "Customize", iconName: ColorLensOutlinedIcon, onClick: goToQRCodeCustomizationPage
         },
         {
-            menuItemTitle: "Download PNG", iconName: FileDownloadOutlinedIcon, onClick: () => {
-            }
+            menuItemTitle: "Download PNG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${link.shortCode}`, "png"),
         },
         {
-            menuItemTitle: "Download JPEG", iconName: FileDownloadOutlinedIcon, onClick: () => {
-            }
+            menuItemTitle: "Download JPEG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${link.shortCode}`, "jpeg"),
         },
         {
-            menuItemTitle: "Download WEBP", iconName: FileDownloadOutlinedIcon, onClick: () => {
-            }
+            menuItemTitle: "Download SVG",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${link.shortCode}`, "svg"),
+        },
+        {
+            menuItemTitle: "Download WEBP",
+            iconName: FileDownloadOutlinedIcon,
+            onClick: () => downloadQRCode(options, `short-ly_${link.shortCode}`, "webp"),
         },
     ];
 
@@ -54,6 +75,7 @@ export default function QRCodeInfoActions({qrCode, goToQRCodeCreationPage}: QRCo
                             startIcon={<BarChartOutlinedIcon/>}
                             variant="outlined"
                             color="secondary"
+                            onClick={goToQRCodeDetailsPage}
                         >
                             View Details
                         </DefaultButton>

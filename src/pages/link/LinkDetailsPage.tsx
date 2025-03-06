@@ -97,6 +97,14 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
 
     const goToQRCodeCreationPage = () => {
         navigate(`/${rootRoutePrefixes.QRCodes}/create/${shortCode}`);
+    };
+
+    const goToQRCodeCustomizationPage = () => {
+        navigate(`/${rootRoutePrefixes.QRCodes}/${qrCode?.id}/edit/customize`);
+    };
+
+    const goToQRCodeDetailsPage = () => {
+        navigate(`/${rootRoutePrefixes.QRCodes}/${qrCode?.id}/details`);
     }
 
     React.useEffect(() => {
@@ -142,21 +150,28 @@ export default function LinkDetailsPage({api}: { api: AxiosInstance }) {
                     </Box>
                     <Box>
                         {link && (
-                            <Box>
-                                <LinkDetailsCard
-                                    item={link}
-                                    goToEditPage={goToEditPage}
-                                    openDeleteLinkDialog={() => setOpenedDialog(deleteLinkDialogName)}
-                                />
-                            </Box>
+                            <>
+                                <Box>
+                                    <LinkDetailsCard
+                                        item={link}
+                                        goToEditPage={goToEditPage}
+                                        openDeleteLinkDialog={() => setOpenedDialog(deleteLinkDialogName)}
+                                    />
+                                </Box>
+                                <Box sx={{mt: 3}}>
+                                    <QRCodeInfo
+                                        options={options}
+                                        link={link}
+                                        qrCodeRef={qrCodeRef}
+                                        qrCode={qrCode}
+                                        goToQRCodeCreationPage={goToQRCodeCreationPage}
+                                        goToQRCodeCustomizationPage={goToQRCodeCustomizationPage}
+                                        goToQRCodeDetailsPage={goToQRCodeDetailsPage}
+                                    />
+                                </Box>
+                            </>
                         )}
-                        <Box sx={{mt: 3}}>
-                            <QRCodeInfo
-                                qrCodeRef={qrCodeRef}
-                                qrCode={qrCode}
-                                goToQRCodeCreationPage={goToQRCodeCreationPage}
-                            />
-                        </Box>
+
                     </Box>
                 </Box>
             )}

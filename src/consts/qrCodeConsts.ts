@@ -45,5 +45,5 @@ export const qrCodePresets: Record<string, Record<string, number>> = {
     updateQRCode: {width: 240, height: 240},
     linkDetails: {width: 150, height: 150},
     qrCodeList: {width: 120, height: 120},
-    qrCodeDetails: {width: 136, height: 136},
+    qrCodeDetails: {width: 150, height: 150},
 };

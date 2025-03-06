@@ -5,16 +5,29 @@ import QRCodeInfoActions from "@app-components/link/details/QRCodeInfoActions.ts
 import {blueGrey} from "@mui/material/colors";
 import {QRCodeItem} from "@app-types/qrCode.ts";
 import QRCodeContainer from "@app-components/link/details/QRCodeContainer.tsx";
+import {LinkItem} from "@app-types/link.ts";
+import {Options} from "qr-code-styling";
 
 
 interface QRCodeInfoProps {
-    qrCodeRef:  React.RefObject<HTMLDivElement>;
+    qrCodeRef: React.RefObject<HTMLDivElement>;
     qrCode: QRCodeItem | null;
+    link: LinkItem;
+    options: Options;
     goToQRCodeCreationPage: () => void;
+    goToQRCodeCustomizationPage: () => void;
+    goToQRCodeDetailsPage: () => void;
 }
 
-
-export default function QRCodeInfo({qrCodeRef, qrCode, goToQRCodeCreationPage}: QRCodeInfoProps) {
+export default function QRCodeInfo({
+                                       qrCodeRef,
+                                       qrCode,
+                                       goToQRCodeCreationPage,
+                                       goToQRCodeCustomizationPage,
+                                       goToQRCodeDetailsPage,
+                                       link,
+                                       options,
+                                   }: QRCodeInfoProps) {
     return (
         <Box sx={{padding: 3, backgroundColor: "white", borderRadius: "8px"}}>
             <Box>
@@ -24,10 +37,17 @@ export default function QRCodeInfo({qrCodeRef, qrCode, goToQRCodeCreationPage}: 
             </Box>
             <Box display="flex" gap={1.5} flexWrap="wrap" alignItems="flex-start">
                 <Box>
-                    <QRCodeContainer qrCode={qrCode} qrCodeRef={qrCodeRef} />
+                    <QRCodeContainer qrCode={qrCode} qrCodeRef={qrCodeRef}/>
                 </Box>
                 <Box>
-                    <QRCodeInfoActions qrCode={qrCode} goToQRCodeCreationPage={goToQRCodeCreationPage} />
+                    <QRCodeInfoActions
+                        qrCode={qrCode}
+                        options={options}
+                        link={link}
+                        goToQRCodeCreationPage={goToQRCodeCreationPage}
+                        goToQRCodeCustomizationPage={goToQRCodeCustomizationPage}
+                        goToQRCodeDetailsPage={goToQRCodeDetailsPage}
+                    />
                 </Box>
             </Box>
         </Box>

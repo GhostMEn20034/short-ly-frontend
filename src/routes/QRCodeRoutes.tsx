@@ -6,6 +6,7 @@ import {AxiosInstance} from "axios";
 import QRCodeListPage from "@app-pages/qrCodes/QRCodeListPage.tsx";
 import UpdateQRCodeCustomizationPage from "@app-pages/qrCodes/UpdateQRCodeCustomizationPage.tsx";
 import UpdateQRCodeContentPage from "@app-pages/qrCodes/UpdateQRCodeContentPage.tsx";
+import QRCodeDetailsPage from "@app-pages/qrCodes/QRCodeDetailsPage.tsx";
 
 
 export default function QRCodeRoutes({api}: { api: AxiosInstance }) {
@@ -15,7 +16,7 @@ export default function QRCodeRoutes({api}: { api: AxiosInstance }) {
                 <PrivateRoute>
                     <QRCodeListPage api={api} />
                 </PrivateRoute>
-            }/>
+            } />
             <Route path="/create" element={
                 <PrivateRoute>
                     <CreateQRCodePage api={api} />
@@ -25,6 +26,12 @@ export default function QRCodeRoutes({api}: { api: AxiosInstance }) {
             <Route path="/create/:shortCode" element={
                 <PrivateRoute>
                     <CreateQRCodeForExistingLinkPage api={api} />
+                </PrivateRoute>
+            } />
+
+            <Route path="/:qrCodeId/details" element={
+                <PrivateRoute>
+                    <QRCodeDetailsPage api={api} />
                 </PrivateRoute>
             } />
 

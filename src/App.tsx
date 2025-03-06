@@ -10,12 +10,13 @@ import routeNames from "@app-consts/routeNames.ts";
 import PrivateRoute from "@app-components/common/react-router/PrivateRoute.tsx";
 import {UserProvider} from "@app-context/UserContext.tsx";
 import LinkRoutes from "./routes/LinkRoutes.tsx";
+import QRCodeRoutes from "./routes/QRCodeRoutes.tsx";
 import dayjs from "dayjs";
 // DayJS plugins
 import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import Timezone from "dayjs/plugin/timezone";
 import UTC from "dayjs/plugin/utc";
-import QRCodeRoutes from "./routes/QRCodeRoutes.tsx";
+
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(Timezone)

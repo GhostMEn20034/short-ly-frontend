@@ -14,9 +14,10 @@ import {convertLinkDetailsResponse} from "@app-utils/link/convertResponse.ts";
 import InsertLinkOutlinedIcon from '@mui/icons-material/InsertLinkOutlined';
 import {LinkItem} from "@app-types/link.ts";
 import Link from "@mui/material/Link";
-import {Chip} from "@mui/material";
+import {Chip, useMediaQuery} from "@mui/material";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
+import {useTheme} from "@mui/material/styles";
 
 
 export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
@@ -29,6 +30,9 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
 
     const navigate = useNavigate();
     const {shortCode} = useParams();
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
     const getLink = async () => {
         try {
@@ -135,7 +139,12 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
                         <Grid
                             size={{sm: 12, xs: 12, md: 5}}
                             order={{xs: 1, sm: 1, md: 2}}
-                            sx={{px: 10, my: 2}}
+                            sx={{
+                                px: 10, my: 2,
+                                position: isSmallScreen ? "relative" : "sticky",
+                                top: isSmallScreen ? "auto" : 100,
+                                alignSelf: "start",
+                            }}
                         >
                             <QRCodePreview
                                 qrCodeRef={qrCodeRef}

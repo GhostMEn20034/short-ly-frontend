@@ -16,6 +16,8 @@ import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
 import UpdateQRCodeContentForm from "@app-components/QRCode/update/UpdateQRCodeContentForm.tsx";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
+import {useTheme} from "@mui/material/styles";
+import {useMediaQuery} from "@mui/material";
 
 export default function UpdateQRCodeContentPage({api}: { api: AxiosInstance }) {
     const [options, setOptions] = React.useState<Options>(getDefaultQrCodeOptions());
@@ -29,6 +31,9 @@ export default function UpdateQRCodeContentPage({api}: { api: AxiosInstance }) {
 
     const navigate = useNavigate();
     const {qrCodeId} = useParams();
+
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
     const getQRCode = async () => {
         try {
@@ -149,7 +154,12 @@ export default function UpdateQRCodeContentPage({api}: { api: AxiosInstance }) {
                             <Grid
                                 size={{sm: 12, xs: 12, md: 5}}
                                 order={{xs: 1, sm: 1, md: 2}}
-                                sx={{px: 10, my: 2}}
+                                sx={{
+                                    px: 10, my: 2,
+                                    position: isSmallScreen ? "relative" : "sticky",
+                                    top: isSmallScreen ? "auto" : 100,
+                                    alignSelf: "start",
+                                }}
                             >
                                 <QRCodePreview
                                     qrCodeRef={qrCodeRef}

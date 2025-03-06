@@ -47,6 +47,14 @@ export default function QRCodeListPage({api}: { api: AxiosInstance }) {
         navigate(`/${rootRoutePrefixes.QRCodes}/${qrCodeId}/edit/content`);
     };
 
+    const goToLinkDetailsPage = (shortCode: string) => {
+        navigate(`/${rootRoutePrefixes.links}/${shortCode}/details`);
+    };
+
+    const goToQRCodeDetailsPage = (qrCodeId: number) => {
+        navigate(`/${rootRoutePrefixes.QRCodes}/${qrCodeId}/details`);
+    };
+
     const getQRCodeList = async () => {
         const params = generateQueryParams(page, pageSize, dateRange.dateFrom, dateRange.dateTo);
 
@@ -131,6 +139,8 @@ export default function QRCodeListPage({api}: { api: AxiosInstance }) {
                                 item={qrCode}
                                 goToCustomizationPage={goToCustomizationPage}
                                 goToEditQRCodeContentPage={goToEditQRCodeContentPage}
+                                goToLinkDetailsPage={goToLinkDetailsPage}
+                                goToQRCodeDetailsPage={goToQRCodeDetailsPage}
                             />
                         </Box>
                     ))}
