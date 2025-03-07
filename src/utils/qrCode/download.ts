@@ -9,6 +9,8 @@ export default function downloadQRCode(options: Options, fileName: string, fileE
     clonedOptions.height = 600;
 
     clonedOptions.margin = 5;
+    clonedOptions.imageOptions!.imageSize = 0.4;
+    clonedOptions.imageOptions!.margin = 20;
 
     // Create QRCodeStyling instance
     const qrCode = new QRCodeStyling(clonedOptions);

@@ -18,6 +18,7 @@ import {Chip, useMediaQuery} from "@mui/material";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
 import {useTheme} from "@mui/material/styles";
+import { buildTrackingURL } from "@app-utils/qrCode/qrCodeLink";
 
 
 export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
@@ -120,7 +121,7 @@ export function CreateQRCodeForExistingLinkPage({api}: { api: AxiosInstance }) {
                                         </Typography>
                                         <Chip
                                             icon={<InsertLinkOutlinedIcon />}
-                                            label={`${window.location.host}/${shortCode}`}
+                                            label={buildTrackingURL(shortCode!)}
                                             sx={{ borderRadius: 2.5, fontWeight: "bold", color: blueGrey[800] }}
                                         />
                                     </Box>

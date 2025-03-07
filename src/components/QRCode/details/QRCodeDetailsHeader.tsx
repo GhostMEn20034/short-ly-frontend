@@ -9,9 +9,9 @@ import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router";
 import Divider from "@mui/material/Divider";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import {apiBaseUrl} from "@app-settings";
 import Grid from "@mui/material/Grid2";
 import {Options} from "qr-code-styling";
+import { buildTrackingURL } from "@app-utils/qrCode/qrCodeLink";
 
 
 interface QRCodeDetailsHeaderProps {
@@ -85,8 +85,8 @@ export default function QRCodeDetailsHeader({
                         <LinkIcon fontSize="small"/>
                         <Typography variant="body1">
                             <Link underline="hover" color="inherit" target="_blank" component={RouterLink}
-                                  to={`${apiBaseUrl}/${item.link.short_code}`}>
-                                {`${apiBaseUrl}/${item.link.short_code}`}
+                                  to={buildTrackingURL(item.link.short_code)}>
+                                {buildTrackingURL(item.link.short_code)}
                             </Link>
                         </Typography>
                     </Box>

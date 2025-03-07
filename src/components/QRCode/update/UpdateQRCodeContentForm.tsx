@@ -7,9 +7,9 @@ import FormControl from "@mui/material/FormControl";
 import {QRCodeItemWithLink} from "@app-types/qrCode.ts";
 import {StateField} from "@app-types/common.ts";
 import Typography from "@mui/material/Typography";
-import {apiBaseUrl} from "@app-settings";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { IconButton, Tooltip } from "@mui/material";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 interface UpdateQRCodeContentFormProps {
@@ -20,6 +20,9 @@ interface UpdateQRCodeContentFormProps {
 
 
 export default function UpdateQRCodeContentForm({item, newTitle, formErrors}: UpdateQRCodeContentFormProps) {
+
+    const trackingURL = buildTrackingURL(item.link.short_code)
+
     return (
         <Box>
             <Box sx={{mb: 2}}>
@@ -62,11 +65,11 @@ export default function UpdateQRCodeContentForm({item, newTitle, formErrors}: Up
                 </Box>
                 <Box display="flex" alignItems="center" gap={1}>
                     <Typography sx={{ color: blueGrey[800] }}>
-                        {`${apiBaseUrl}/${item.link.short_code}`}
+                        {trackingURL}
                     </Typography>
                     <Tooltip title="Copy to clipboard">
                         <IconButton
-                            onClick={() => navigator.clipboard.writeText(`${apiBaseUrl}/${item.link.short_code}`)}
+                            onClick={() => navigator.clipboard.writeText(trackingURL)}
                             size="small"
                             color="primary"
                         >

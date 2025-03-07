@@ -125,6 +125,9 @@ export default function FilterByDateRangeDialog({open, handleClose, handleSubmit
                                     onChange={(newValue) => {
                                         setDateFrom(newValue);
                                         setDateRangePreset(null);
+                                        if (!dateTo) {
+                                            setDateTo(dayjs());
+                                        }
                                     }}
                                 />
                             </LocalizationProvider>
@@ -141,6 +144,9 @@ export default function FilterByDateRangeDialog({open, handleClose, handleSubmit
                                     onChange={(newValue) => {
                                         setDateTo(newValue);
                                         setDateRangePreset(null);
+                                        if (!dateFrom) {
+                                            setDateFrom(dayjs());
+                                        }
                                     }}
                                 />
                             </LocalizationProvider>
@@ -160,5 +166,5 @@ export default function FilterByDateRangeDialog({open, handleClose, handleSubmit
                 </DialogActions>
             </BootstrapDialog>
         </React.Fragment>
-    )
+    );
 }

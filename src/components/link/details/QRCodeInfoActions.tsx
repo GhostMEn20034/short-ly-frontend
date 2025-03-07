@@ -94,6 +94,7 @@ export default function QRCodeInfoActions({
                         anchorEl={anchorEl}
                         handleClose={handleClose}
                         actionMenuItems={menuItems}
+                        dividerAfterIndexes={[0, ]}
                     />
                 </Box>
             ) : (

@@ -4,12 +4,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import {apiBaseUrl} from "@app-settings";
 import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router";
 import ListItemActions from "@app-components/link/list/ListItemActions.tsx";
 import {blueGrey} from "@mui/material/colors";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 interface LinkListItemProps {
@@ -20,6 +20,8 @@ interface LinkListItemProps {
 }
 
 export default function LinkListItem({item, goToEditPage, goToDetailsPage, openDeleteLinkDialog}: LinkListItemProps) {
+
+    const trackingURL = buildTrackingURL(item.shortCode!);
 
     return (
         <Box sx={{padding: 2, backgroundColor: "white", borderRadius: "8px"}}>
@@ -48,9 +50,9 @@ export default function LinkListItem({item, goToEditPage, goToDetailsPage, openD
                             underline="hover"
                             component={RouterLink}
                             target={"_blank"}
-                            to={`${apiBaseUrl}/${item.shortCode}`}
+                            to={trackingURL}
                         >
-                            <b>{`${apiBaseUrl}/${item.shortCode}`}</b>
+                            <b>{trackingURL}</b>
                         </Link>
                     </Box>
                     <Box sx={{mb: 2.5}}>
@@ -81,7 +83,7 @@ export default function LinkListItem({item, goToEditPage, goToDetailsPage, openD
                 </Grid>
                 <Grid size={{xs: 12, md: 3}}>
                     <ListItemActions
-                        shortLink={`${apiBaseUrl}/${item.shortCode}`}
+                        shortLink={trackingURL}
                         goToEditPage={goToEditPage}
                         goToDetailsPage={goToDetailsPage}
                         openDeleteLinkDialog={() => openDeleteLinkDialog(item)}

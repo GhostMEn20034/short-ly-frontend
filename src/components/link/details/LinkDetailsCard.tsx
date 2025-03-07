@@ -5,9 +5,9 @@ import Link from "@mui/material/Link";
 import {Link as RouterLink} from "react-router";
 import Typography from "@mui/material/Typography";
 import {blueGrey} from "@mui/material/colors";
-import {apiBaseUrl} from "@app-settings";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import LinkDetailsActions from "@app-components/link/details/LinkActions.tsx";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 interface LinkDetailsCardProps {
     item: LinkItem;
@@ -16,6 +16,9 @@ interface LinkDetailsCardProps {
 }
 
 export default function LinkDetailsCard({item, goToEditPage, openDeleteLinkDialog}: LinkDetailsCardProps) {
+
+    const trackingURL = buildTrackingURL(item.shortCode!);
+
     return (
         <Box sx={{padding: 3, backgroundColor: "white", borderRadius: "8px"}}>
             <Grid container spacing={1}>
@@ -36,9 +39,9 @@ export default function LinkDetailsCard({item, goToEditPage, openDeleteLinkDialo
                             underline="hover"
                             component={RouterLink}
                             target={"_blank"}
-                            to={`${apiBaseUrl}/${item.shortCode}`}
+                            to={trackingURL}
                         >
-                            <b>{`${apiBaseUrl}/${item.shortCode}`}</b>
+                            <b>{trackingURL}</b>
                         </Link>
                     </Box>
                     <Box sx={{mb: 2.5}}>
@@ -64,7 +67,7 @@ export default function LinkDetailsCard({item, goToEditPage, openDeleteLinkDialo
                 </Grid>
                 <Grid size={{xs: 12, md: 3}}>
                     <LinkDetailsActions
-                        shortLink={`${apiBaseUrl}/${item.shortCode}`}
+                        shortLink={trackingURL}
                         goToEditPage={goToEditPage}
                         openDeleteLinkDialog={openDeleteLinkDialog}
                     />

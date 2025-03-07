@@ -6,7 +6,6 @@ import {Link as RouterLink} from "react-router";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import Typography from "@mui/material/Typography";
 import {blueGrey} from "@mui/material/colors";
-import {apiBaseUrl} from "@app-settings";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -15,6 +14,7 @@ import QRCodeStyling, {Options} from "qr-code-styling";
 import {getDefaultQrCodeOptions} from "@app-utils/qrCode/customization/options.ts";
 import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
 import QRCodeListItemActions from "@app-components/QRCode/list/QRCodeListItemActions.tsx";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 interface QRCodeItemProps {
@@ -27,11 +27,14 @@ interface QRCodeItemProps {
 
 export function QRCodeListItem({item, goToCustomizationPage, goToEditQRCodeContentPage,
                                    goToLinkDetailsPage, goToQRCodeDetailsPage}: QRCodeItemProps) {
+    const trackingURL = buildTrackingURL(item.link.short_code, "qr");
+    const trackingURLWithoutQrReference = buildTrackingURL(item.link.short_code);
+
     const [options] = React.useState<Options>(getDefaultQrCodeOptions({
         margin: 1,
         width: qrCodePresets.qrCodeList.width,
         height: qrCodePresets.qrCodeList.height,
-        data: `${apiBaseUrl}/${item.link.short_code}`,
+        data: trackingURL,
         imageOptions: {
             hideBackgroundDots: true,
             imageSize: 0.4,
@@ -87,9 +90,9 @@ export function QRCodeListItem({item, goToCustomizationPage, goToEditQRCodeConte
                             underline="hover"
                             component={RouterLink}
                             target={"_blank"}
-                            to={`${apiBaseUrl}/${item.link.short_code}`}
+                            to={trackingURLWithoutQrReference}
                         >
-                            <b>{`${apiBaseUrl}/${item.link.short_code}`}</b>
+                            <b>{trackingURLWithoutQrReference}</b>
                         </Link>
                     </Box>
                     <Box display="flex" alignItems="center" sx={{mb: 2.5}}>

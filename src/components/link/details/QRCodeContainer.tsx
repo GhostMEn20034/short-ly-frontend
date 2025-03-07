@@ -17,10 +17,10 @@ export default function QRCodeContainer({ qrCode, qrCodeRef }: QRCodeContainerPr
                     ref={qrCodeRef}
                 />
             ) : (
-                <Box>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center"}}>
                     <QRCodePlaceholder
-                        width={qrCodePresets.linkDetails.width}
-                        height={qrCodePresets.linkDetails.height}
+                        width={qrCodePresets.linkDetailsPlaceholder.width}
+                        height={qrCodePresets.linkDetailsPlaceholder.height}
                     />
                 </Box>
             )}

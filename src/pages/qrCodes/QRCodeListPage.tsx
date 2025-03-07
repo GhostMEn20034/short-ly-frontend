@@ -64,9 +64,27 @@ export default function QRCodeListPage({api}: { api: AxiosInstance }) {
             setQRCodes(convertListOfQRCodesResponse(data.items));
             setPageCount(data.pagination.total_pages);
             setQRCodesCount(data.pagination.total_items);
-        } catch (error: unknown) {
-            console.log(error);
+        } catch {
+            console.log("Something went wrong");
         }
+    };
+
+    const handleSubmitDateRangeFilter = (dateRange: DateRange) => {
+        const params: Record<string, string | number> = {
+            'page': 1,
+        };
+
+        let updatedSearchParams = searchParams;
+
+        if (dateRange.dateFrom !== null && dateRange.dateTo !== null) {
+            params['dateFrom'] = dateRange.dateFrom.format('YYYY-MM-DD');
+            params['dateTo'] = dateRange.dateTo.format('YYYY-MM-DD');
+        } else {
+            updatedSearchParams = deleteQueryParams(searchParams, ["dateFrom", "dateTo"]);
+        }
+        updatedSearchParams = changeQueryParams(updatedSearchParams, params)
+        setSearchParams(updatedSearchParams);
+        setOpenedDialog(null);
     };
 
     const filtersApplied = () => dateRange.dateFrom !== null && dateRange.dateTo !== null;
@@ -185,7 +203,7 @@ export default function QRCodeListPage({api}: { api: AxiosInstance }) {
             <FilterByDateRangeDialog
                 open={openedDialog === filterByDateRangeDialogName}
                 handleClose={() => setOpenedDialog(null)}
-                handleSubmit={() => ""}
+                handleSubmit={handleSubmitDateRangeFilter}
                 dateRange={dateRange}
             />
         </Box>

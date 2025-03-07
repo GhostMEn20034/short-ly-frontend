@@ -12,12 +12,12 @@ import {blueGrey} from "@mui/material/colors";
 import DesignCustomization from "@app-components/QRCode/common/DesignCustomization.tsx";
 import QRCodePreview from "@app-components/QRCode/common/QRCodePreview.tsx";
 import DefaultButton from "@app-components/common/buttons/DefaultButton.tsx";
-import {apiBaseUrl} from "@app-settings";
 import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
 import {useTheme} from "@mui/material/styles";
 import {useMediaQuery} from "@mui/material";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 export default function UpdateQRCodeCustomizationPage({api}: { api: AxiosInstance }) {
@@ -44,7 +44,7 @@ export default function UpdateQRCodeCustomizationPage({api}: { api: AxiosInstanc
                 ...prevOptions,
                 width: qrCodePresets.updateQRCode.width,
                 height: qrCodePresets.updateQRCode.height,
-                data: `${apiBaseUrl}/${retrievedQRCode.link.short_code}`,
+                data: buildTrackingURL(retrievedQRCode.link.short_code, "qr"),
                 image: retrievedQRCode.image,
                 ...retrievedQRCode.customization,
 
@@ -76,7 +76,7 @@ export default function UpdateQRCodeCustomizationPage({api}: { api: AxiosInstanc
         const dataToOverride: Options = {
             width: qrCodePresets.updateQRCode.width,
             height: qrCodePresets.updateQRCode.height,
-            data: `${apiBaseUrl}/${qrCode!.link.short_code}`,
+            data: buildTrackingURL(qrCode!.link.short_code, "qr"),
             image: undefined,
         };
 

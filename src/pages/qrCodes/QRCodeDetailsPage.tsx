@@ -9,11 +9,11 @@ import {QRCodeItemWithLink} from "@app-types/qrCode.ts";
 import axios, {AxiosInstance} from "axios";
 import QRCodeStyling, {Options} from "qr-code-styling";
 import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
-import {apiBaseUrl} from "@app-settings";
 import {getDefaultQrCodeOptions} from "@app-utils/qrCode/customization/options.ts";
 import {convertQRCodeDetailsResponse} from "@app-utils/qrCode/convertResponse.ts";
 import Grid from "@mui/material/Grid2";
 import QRCodeDetailsHeader from "@app-components/QRCode/details/QRCodeDetailsHeader.tsx";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 export default function QRCodeDetailsPage({api}: { api: AxiosInstance }) {
@@ -47,14 +47,14 @@ export default function QRCodeDetailsPage({api}: { api: AxiosInstance }) {
             if (receivedQRCode) {
                 setOptions((prevOptions: Options) => ({
                     ...prevOptions,
-                    margin: 2,
+                    margin: 1.5,
                     imageOptions: {
                         ...prevOptions.imageOptions,
                         margin: 4,
                     },
                     width: qrCodePresets.qrCodeDetails.width,
                     height: qrCodePresets.qrCodeDetails.height,
-                    data: `${apiBaseUrl}/${receivedQRCode.link.short_code}`,
+                    data: buildTrackingURL(receivedQRCode.link.short_code, "qr"),
                     image: receivedQRCode.image || undefined,
                     ...receivedQRCode.customization,
                 }));

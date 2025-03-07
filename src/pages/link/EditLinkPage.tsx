@@ -11,6 +11,7 @@ import {blueGrey} from "@mui/material/colors";
 import {EditLinkStates} from "@app-types/link.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
 import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 
 export default function EditLinkPage({api}: { api: AxiosInstance }) {
@@ -97,7 +98,7 @@ export default function EditLinkPage({api}: { api: AxiosInstance }) {
                             <b>Short Link</b>
                         </Typography>
                         <Link underline="hover" target="_blank" component={RouterLink}
-                              to={`${apiBaseUrl}/${shortCode}`}>
+                              to={buildTrackingURL(shortCode!)}>
                             <b>{`${apiBaseUrl}/${shortCode}`}</b>
                         </Link>
                     </Box>

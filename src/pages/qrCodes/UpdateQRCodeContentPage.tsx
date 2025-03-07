@@ -6,7 +6,6 @@ import {QRCodeItemWithLink} from "@app-types/qrCode.ts";
 import {useNavigate, useParams} from "react-router";
 import {convertQRCodeDetailsResponse} from "@app-utils/qrCode/convertResponse.ts";
 import {qrCodePresets} from "@app-consts/qrCodeConsts.ts";
-import {apiBaseUrl} from "@app-settings";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid2";
@@ -18,6 +17,7 @@ import {rootRoutePrefixes} from "@app-consts/routePrefixes.ts";
 import {parseErrors} from "@app-utils/errorParsers.ts";
 import {useTheme} from "@mui/material/styles";
 import {useMediaQuery} from "@mui/material";
+import {buildTrackingURL} from "@app-utils/qrCode/qrCodeLink.ts";
 
 export default function UpdateQRCodeContentPage({api}: { api: AxiosInstance }) {
     const [options, setOptions] = React.useState<Options>(getDefaultQrCodeOptions());
@@ -45,7 +45,7 @@ export default function UpdateQRCodeContentPage({api}: { api: AxiosInstance }) {
                 ...prevOptions,
                 width: qrCodePresets.updateQRCode.width,
                 height: qrCodePresets.updateQRCode.height,
-                data: `${apiBaseUrl}/${retrievedQRCode.link.short_code}`,
+                data: buildTrackingURL(retrievedQRCode.link.short_code, "qr"),
                 image: retrievedQRCode.image,
                 ...retrievedQRCode.customization,
 
